@@ -1,0 +1,258 @@
+.Home {
+  width: 100%;
+  height: calc(100% - 195px);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.Home_navbar {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+.NavigationButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  font-size: 34px;
+}
+
+.Spinner-home {
+  width: 100px;
+  height: 25px;
+  background-color: aqua;
+  display: flex;
+  /* Center the spinner if needed */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Prevent overflow issues */
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 60px;
+  height: 14px;
+  --c: #fff 90deg, #0000 0;
+  background: conic-gradient(from 135deg at top, var(--c)) 0 0,
+    conic-gradient(from -45deg at bottom, var(--c)) 0 100%;
+  background-size: calc(100% / 4) 50%;
+  background-repeat: repeat-x;
+  animation: l12 1s infinite;
+}
+
+@keyframes l12 {
+
+  80%,
+  100% {
+    background-position: calc(100% / 3) 0, calc(100% / -3) 100%;
+  }
+}
+
+.Spinner-home>* {
+  width: 100%;
+  height: 100%;
+}
+
+.SubcategoryName {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  position: absolute;
+  height: 100%;
+  font-size: 34px;
+}
+
+.SubcategoryName p {
+  z-index: 5;
+}
+
+.NavigationButtons div {
+  z-index: 5;
+}
+
+.CategoryButtons {
+  z-index: 5;
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-start;
+  transition: all 0.6s ease;
+}
+
+.categoriesButtons {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  padding-left: 70px;
+  justify-content: start;
+  align-items: start;
+  transition: all 0.6s ease;
+}
+
+.categoriesButtons button {
+  width: auto;
+  height: 35px;
+  /* Slightly taller for better UX */
+  padding: 0px 20px;
+  margin: 0 5px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.categoriesButtons button:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  transform: translateY(-2px);
+  /* Subtle lift effect */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  /* Enhanced shadow */
+}
+
+.categoriesButtons button:active {
+  transform: translateY(0px);
+  /* Back to normal on click */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.categoriesButtons button.active {
+  color: var(--bg-color);
+  font-weight: bold;
+  transform: scale(1.1);
+  background: var(--text-color);
+  border: 2px solid var(--bg-color);
+  /* Highlight active button */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  /* More prominent shadow */
+}
+
+.new-products-slide {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.new-product {
+  width: 50%;
+  /* Both images will take 50% width */
+  position: relative;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  object-position: top;
+}
+
+.new-tag {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+@media (max-width: 1279px) {
+  .categoriesButtons {
+    margin: 0px 0px 0px 60px;
+  }
+
+  .CategoryButtons {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 1179px) {
+  .categoriesButtons {
+    margin: 0px 0px 0px 36px;
+  }
+
+  .CategoryButtons {
+    margin-top: 20px;
+  }
+}
+
+.SwiperArea {
+  width: 100%;
+  height: 100vh;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Tailwind CSS Classes */
+.Swiper_Slider_Images {
+  @apply w-full h-full object-cover;
+}
+
+/* For Medium and Smaller Devices */
+@media (max-width: 768px) {
+  .Swiper_Slider_Images {
+    width: 100% !important;
+    /* Ensure full width on md */
+    height: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .new-products-slide {
+    flex-direction: column;
+    /* Stack the products vertically */
+  }
+
+  .left-product {
+    display: none;
+    /* Hide the left product */
+  }
+
+  .right-product {
+    width: 100%;
+    /* Take full width */
+  }
+
+  .CategoryButtons {
+    display: none;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+}

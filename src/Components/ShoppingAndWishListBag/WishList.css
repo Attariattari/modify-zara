@@ -1,0 +1,211 @@
+.WishList {
+    width: 100%;
+    height: auto;
+    padding-top: 268px;
+    transition: all 0.6s ease;
+}
+
+.Wishlist_Buttons_For_Controls {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 25px;
+    font-size: 10px;
+    gap: 20px;
+    transition: all 0.6s ease;
+}
+
+.wishlistButtonArea {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    z-index: 01;
+    bottom: 0px;
+    cursor: pointer;
+
+}
+
+.Wishlist_Buttons_For_Controls p {
+    cursor: pointer;
+}
+
+.WishListNoLogin {
+    width: 100%;
+    height: 200px;
+    transition: all 0.6s ease;
+}
+
+.NoLogindata {
+    width: 300px;
+    height: 100%;
+    margin-left: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    font-size: 10px;
+}
+
+.NoLogindata button {
+    height: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.LinkLogin {
+    width: 100%;
+    height: 100%;
+}
+
+.LinkRig {
+    text-decoration: underline;
+}
+
+/* WishListArea */
+.WishListArea {
+    width: 100%;
+    height: auto;
+    transition: all 0.6s ease;
+}
+
+.WishListName {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+    transition: all 0.6s ease;
+}
+
+.Swiperslidebutton {
+    width: 40px;
+    height: 100%;
+    font-size: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+}
+
+.Swiperslidebutton:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 1);
+}
+
+/* ✅ Professional Active Styling */
+.Swiperslidebutton.active {
+    border: 1.5px solid rgba(34, 197, 94, 1);
+    /* Emerald Green Border */
+    color: rgba(34, 197, 94, 1);
+    /* Vibrant Green Text */
+    font-weight: 600;
+    letter-spacing: 0px;
+}
+
+
+.WhistlistcrateButtonin_mobile {
+    display: none;
+}
+
+.padding-0 {
+    margin-top: 0 !important;
+}
+
+.padding-top-20 {
+    margin-top: 20px !important;
+}
+
+@media (max-width: 1279px) {
+    .WishList {
+        padding-top: 255px;
+    }
+
+    .NoLogindata {
+        margin-left: 147px;
+    }
+}
+
+@media (max-width: 1179px) {
+    .WishList {
+        padding-top: 235px;
+    }
+
+    .NoLogindata {
+        margin-left: 123px;
+    }
+}
+
+@media (max-width:1024px) {
+    .WishList {
+        padding-top: 227px;
+    }
+}
+
+@media (max-width:950px) {
+    .WishList {
+        padding-top: 222px;
+    }
+}
+
+@media (max-width: 872px) {
+    .WishList {
+        padding-top: 217px;
+    }
+}
+
+@media (max-width: 768px) {
+    .WishList {
+        padding-top: 129px;
+    }
+
+    .NoLogindata {
+        width: 100%;
+        padding: 0px 20px 0px 20px;
+        margin-left: 0px;
+    }
+
+    .Wishlist_Buttons_For_Controls {
+        display: none;
+    }
+
+    .WhistlistcrateButtonin_mobile {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 53px;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .WhistlistcrateButtonin_mobile div {
+        width: 100%;
+        height: 40px;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+    .WhistlistcrateButtonin_mobile div button {
+        width: 50%;
+        height: 100%;
+    }
+
+    .WhistlistcrateButtonin_mobile div button:nth-child(1) {
+        border-right: 1px solid black;
+    }
+}

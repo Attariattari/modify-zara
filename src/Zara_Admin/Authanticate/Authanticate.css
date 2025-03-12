@@ -1,0 +1,292 @@
+/* Custom styles for autofilled input fields */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: black !important;
+    background-color: white !important;
+    color: black !important;
+    border: none !important;
+    border-bottom: 1px solid rgb(118, 118, 118) !important;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:-moz-autofill {
+    box-shadow: 0 0 0 30px white inset !important;
+    -moz-text-fill-color: black !important;
+    background-color: white !important;
+    color: black !important;
+    border: none !important;
+    border-bottom: 1px solid rgb(118, 118, 118) !important;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Ensure consistency across different browsers */
+.inputs input {
+    background-color: white;
+    color: black !important;
+    border: none !important;
+    border-bottom: 1px solid rgb(165, 165, 165) !important;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Sirf .BillingInputArea ke andar input pe autofill effect hoga */
+.BillingInputArea input:-webkit-autofill,
+.BillingInputArea input:-webkit-autofill:hover,
+.BillingInputArea input:-webkit-autofill:focus,
+.BillingInputArea input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-color) inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    background-clip: content-box !important;
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Sirf .BillingInputArea ke andar select pe autofill effect hoga */
+.BillingInputArea select:-webkit-autofill,
+.BillingInputArea select:-webkit-autofill:hover,
+.BillingInputArea select:-webkit-autofill:focus,
+.BillingInputArea select:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-color) inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    outline: none !important;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-bottom: 1px solid forestgreen !important;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Additional styles for the rest of your components */
+.Authanticate {
+    width: 100%;
+    height: auto;
+    background: radial-gradient(circle, rgba(153, 153, 153, 1) 0%, rgba(85, 85, 85, 1) 100%);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    transition: all 0.6s ease;
+
+}
+
+.Authanticate_Area {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Authanticate_Form_Area {
+    width: 30%;
+    height: 600px;
+    display: flex;
+    background-color: white;
+    justify-content: start;
+    position: relative;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 2px 3px 62px 20px rgba(28, 28, 28, 0.55);
+    -webkit-box-shadow: 2px 3px 62px 20px rgba(28, 28, 28, 0.55);
+    -moz-box-shadow: 2px 3px 62px 20px rgba(28, 28, 28, 0.55);
+    transition: box-shadow 0.3s ease;
+    transition: all 0.6s ease;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(92, 92, 92, 0.7);
+    /* Glossy effect */
+    z-index: 9999;
+}
+
+.blurred {
+    filter: blur(5px);
+    pointer-events: none;
+    /* Disable interactions */
+}
+
+.submit-button,
+.inputs,
+.ForgottPassword {
+    transition: filter 0.3s;
+}
+
+
+.Authanticate_Form_Area:hover {
+    box-shadow: var(--box-shadow);
+}
+
+.Authanticate_text {
+    font-size: 32px;
+    line-height: 50px;
+    color: black;
+}
+
+.Authanticateform {
+    width: 90%;
+    margin-top: 50px;
+}
+
+.inputs {
+    margin-bottom: 30px;
+}
+
+.custom-input-password {
+    position: relative;
+    background: transparent;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875rem;
+}
+
+.inputs {
+    margin-bottom: 1rem;
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-container {
+    position: relative;
+}
+
+.show-password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: black;
+}
+
+.submit-button {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+.ForgottPassword {
+    margin-top: 1rem;
+    text-align: right;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    width: 100%;
+}
+
+/* Reset Code Check */
+.Resettoken_check {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.timer {
+    color: #000000;
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 30px;
+    border: 1px solid black;
+    padding: 10px 20px 10px 20px;
+}
+
+.Timeouterr {
+    color: red;
+    margin-top: 10px;
+    border: 1px solid red;
+    padding: 10px 20px 10px 20px;
+}
+
+.verificationmain {
+    width: 100%;
+    padding: 30px 15px 30px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Verificationtitle {
+    margin: 0px 0px 30px 0px;
+}
+
+.Verificationtitle {
+    line-height: 30px;
+    font-size: 22px;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+}
+
+
+@media (max-width: 1279px) {
+    .Authanticate_Form_Area {
+        width: 32%;
+    }
+}
+
+@media (max-width: 1179px) {
+    .Authanticate_Form_Area {
+        width: 34%;
+    }
+}
+
+@media (max-width: 1023px) {
+    .Authanticate_Form_Area {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .Authanticate_Form_Area {
+        width: 100%;
+        height: 100vh;
+    }
+}

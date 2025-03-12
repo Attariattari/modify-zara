@@ -1,0 +1,345 @@
+/* Container for the entire grid */
+.product-grid-container {
+  width: 100%;
+  height: auto;
+  padding: 0px 20px;
+  transition: all 0.6s ease;
+}
+
+/* Grid layout for products */
+.product-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  overflow: hidden;
+  transition: all 0.6s ease;
+  cursor: pointer;
+}
+
+/* Individual product card */
+.product-card {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Image styling within product card */
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  overflow: hidden;
+  object-position: top;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Hover effect for product card */
+.product-card:hover {
+  transform: scale(1.1);
+  /* Scale up hovered card */
+  z-index: 2;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+/* Scale down other cards when one is hovered */
+.product-grid:hover .product-card:not(:hover) {
+  transform: scale(0.9);
+  /* Scale down non-hovered cards */
+  opacity: 0.8;
+  /* Slight dimming of non-hovered cards */
+}
+
+.CartSmallButtonArea {
+  position: absolute;
+  z-index: 100;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  opacity: 0;
+  /* Initially invisible */
+  transition: opacity 0.3s ease-in-out;
+  /* Smooth fade effect */
+}
+
+/* Show button only when product card is hovered */
+.product-card:hover .CartSmallButtonArea {
+  opacity: 1;
+  /* Fully visible on hover */
+}
+
+
+
+/* Small */
+.DetailedProducts {
+  width: 100%;
+  height: auto;
+  transition: all 0.6s ease;
+}
+
+.ProductArea {
+  width: 99.9%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  transition: all 0.6s ease;
+}
+
+.CartProductArea {
+  width: 99.9%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  transition: all 0.6s ease;
+  border-top: 1px solid var(--border-color);
+}
+
+/* New Data */
+.ProductGridView {
+  border-top: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  /* height: 415px; */
+}
+
+.Productproductimage img {
+  width: 100%;
+  height: 360px;
+  border-bottom: 1px solid var(--border-color);
+  object-fit: cover;
+  object-position: top;
+}
+
+.Productprdocutsdetailes {
+  display: flex;
+  padding: 6px 6px 0px 6px;
+  font-size: 11px;
+  height: 54px;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.Productseconds {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Productitemicons {
+  display: flex;
+  cursor: pointer;
+}
+
+/* New Data */
+.FlterView {
+  margin-top: 150px;
+}
+
+.ProductData {
+  margin: -1px;
+  position: relative;
+}
+
+.CartButtonArea {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  z-index: 01;
+  bottom: 55px;
+}
+
+.AddToCartIcon {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+}
+
+.Size-Popup {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  background-color: var(--bg-color);
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease-in-out,
+    visibility 0.4s ease-in-out;
+}
+
+.Size-Popup.active {
+  transform: translateY(0%);
+  opacity: 1;
+  visibility: visible;
+}
+
+.Size-area {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  gap: 10px;
+  padding: 10px;
+}
+
+.Size-area button {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  height: 30px;
+}
+
+.Detailed {
+  width: 100%;
+  height: 54px;
+  padding: 10px;
+}
+
+.Detailed h4 {
+  font-size: 10px;
+}
+
+.DetailedTitleandSVG {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.DetailedTitleandSVG svg {
+  font-size: 10px;
+}
+
+.PriceSection {
+  font-size: 10px;
+}
+
+.full-display-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.product-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.product-name:hover {
+  color: #007bff;
+}
+
+.gallery-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gallery-section img {
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-section img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.YOU_MAY_LIKE p {
+  padding: 0px 0px 20px 20px;
+}
+
+.LikeSoneProducts p {
+  padding: 20px 20px 20px 20px;
+}
+
+@media (max-width: 1179px) {
+  .ProductArea {
+    width: 99.9%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .ProductGridView {
+    border-top: none;
+  }
+}
+
+@media (max-width: 983px) {
+  .ProductArea {
+    width: 99.9%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ProductGridView {
+    border-top: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .FlterView {
+    margin-top: 40px;
+  }
+
+  .ProductArea {
+    width: 99.9%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ProductGridView {
+    border-top: none;
+  }
+
+  .ProductAreaSamllImages {
+    width: 99.9%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+  }
+
+  .CartSmallButtonArea {
+    opacity: 1;
+  }
+}

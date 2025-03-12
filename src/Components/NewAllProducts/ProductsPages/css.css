@@ -1,0 +1,74 @@
+.Cart-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--variation-popup-bg);
+  z-index: 1000;
+  box-sizing: border-box;
+  overflow-y: hidden;
+  border-radius: 8px;
+}
+
+.Cartpopup-content-data {
+  width: 100%;
+  height: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1010;
+  position: relative;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Cart-popup button {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 1000000000;
+  top: 0%;
+  right: 0%;
+}
+
+.Cart-popup button :hover {
+  color: #d32f2f;
+}
+
+.popup-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Dark overlay with opacity */
+  backdrop-filter: blur(5px);
+  /* Background blur effect */
+}
+
+.Cartpopup-content-data .Cartpopup-content-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.Cartpopup-content-area div {
+  gap: 5px;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.598);
+}

@@ -1,0 +1,517 @@
+.Help {
+    width: 100%;
+    height: auto;
+    padding: 180px 0px 0px 0px;
+    transition: all 0.6s ease;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+.Help_Center {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.6s ease;
+}
+
+.Help_Background_Image {
+    width: 100%;
+    height: 100vh;
+    background-image: url(https://static.zara.net/photos///contents/mkt/spots/ss24-help-customer/cover-xmedia-11-north//w/483/IMAGE-landscape-web-3c452a17-07dc-4c3c-b233-7f276a5421cb-default_0.jpg?ts=1710160091855);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center;
+    position: relative;
+    transition: all 0.6s ease;
+}
+
+.Help_Search {
+    width: 50%;
+    height: auto;
+    padding: 0px 0px 0px 0px;
+    margin: 60px 0px 0px 95px;
+    position: absolute;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: all 0.6s ease;
+}
+
+.Help_Search input {
+    width: 100%;
+    height: 45px;
+    outline: none;
+    border: 1px solid var(--border-color);
+    padding-left: 25px;
+    font-size: 12px;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+.Help_Search input::placeholder {
+    font-size: 12px;
+}
+
+.JustForScroll {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 20;
+    height: 100px;
+}
+
+.JustForScroll span {
+    display: inline-block;
+    transform-origin: bottom left;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+}
+
+.Help_Just_Scroll {
+    width: 100%;
+    height: auto;
+    padding: 0px 0px 0px 0px;
+}
+
+.Help_Question_area {
+    transition: all 0.6s ease;
+    margin: 60px 0px 0px 0px;
+}
+
+.Help_FREQUENTLY {
+    width: 100%;
+    height: 150px;
+    padding: 0px 83px 0px 95px;
+
+}
+
+.Help_FREQUENTLY div {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.Help_Questions {
+    height: 50px;
+    margin: 20px 0px 0px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+}
+
+.Help_Questions .Help_Links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    border: 1px solid var(--border-color);
+    padding: 7px;
+    font-size: 10px;
+}
+
+.All-Topic_Question {
+    font-size: 13px;
+    padding: 0px 83px 40px 95px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.Help-title {
+    font-weight: bold;
+}
+
+.Help_Question_Grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 25px;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+.Help_Question_Grid p {
+    font-size: 15px;
+    margin: 0px 0px 15px 0px;
+    color: var(--text-color);
+}
+
+.Help_Question_Grid div {
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    gap: 20px;
+    color: var(--text-color);
+}
+
+.QuestionArea .Link {
+    margin-bottom: 8px;
+    font-size: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+}
+
+.ShowAndlessButton {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    font-size: 11px;
+    flex-direction: column;
+    width: 68px;
+    height: 15px;
+    padding: 5px 5px 5px 0px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.accordionarea {
+    width: 100%;
+    height: auto;
+    transition: all 0.6s ease;
+
+}
+
+.AccordionContainer {
+    border: 1px solid var(--border-color);
+    margin-bottom: -4px;
+
+}
+
+.Accordiondetails {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    width: 100%;
+    font-size: 10px;
+}
+
+/* Responcive Displays */
+@media (max-width: 1279px) {
+    .Help {
+        padding: 160px 0px 0px 0px;
+    }
+
+    .Help_Search {
+        width: 50%;
+        height: auto;
+        padding: 0px 0px 0px 0px;
+        margin: 60px 0px 0px 155px;
+        position: absolute;
+    }
+
+    .Help_Question_Grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 1179px) {
+    .Help {
+        padding: 140px 0px 0px 0px;
+    }
+
+    .Help_Background_Image {
+        background-size: 100% auto;
+        height: 100vh;
+        max-width: 100%;
+    }
+
+    .Help_Search {
+        width: 50%;
+        height: auto;
+        padding: 0px 0px 0px 0px;
+        margin: 60px 0px 0px 130px;
+        position: absolute;
+    }
+}
+
+@media (max-width: 1023px) {
+    .Help {
+        padding: 120px 0px 0px 0px;
+    }
+
+    .Help_Center {
+        height: 84vh;
+    }
+
+    .Help_Background_Image {
+        background-size: 100% 84vh;
+        height: 80vh;
+        max-width: 100%;
+    }
+
+    .Help_Question_Grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 970px) {
+    .Help {
+        padding: 120px 0px 0px 0px;
+    }
+}
+
+@media (max-width: 856px) {
+    .Help {
+        padding: 100px 0px 0px 0px;
+    }
+
+    .Help_Center {
+        height: 80vh;
+    }
+
+    .Help_Background_Image {
+        background-size: 100% 80vh;
+        height: 80vh;
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .Help {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .Help_Center {
+        height: 64vh;
+    }
+
+    .Help_Background_Image {
+        background-size: 100% 64vh;
+        height: 64vh;
+        max-width: 100%;
+    }
+
+    .Help_Search {
+        width: 100%;
+        height: auto;
+        padding: 0px 30px 0px 30px;
+        margin: 40px 0px 0px 0px;
+        position: absolute;
+    }
+
+    .Help_FREQUENTLY {
+        padding: 0px 30px 0px 30px;
+        flex-wrap: wrap;
+    }
+
+    .Help_Questions .Help_Links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        border: 1px solid var(--border-color);
+        padding: 7px;
+        font-size: 10px;
+    }
+
+    .All-Topic_Question {
+        padding: 40px 30px 30px 30px;
+    }
+
+    .All-Topic_Question .Help-title {
+        padding: 0px 0px 30px 0px;
+    }
+
+    .Mouse-scroll {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .Help_FREQUENTLY {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .Help_Questions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        height: 100px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    .Help_Center {
+        height: 54vh;
+    }
+
+    .Help_Background_Image {
+        background-size: 100% 54vh;
+        height: 54vh;
+        max-width: 100%;
+    }
+
+    .Help_Search {
+        width: 100%;
+        height: auto;
+        padding: 0px 30px 0px 30px;
+        margin: 40px 0px 0px 0px;
+        position: absolute;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    .Help_Center {
+        height: 45vh;
+    }
+
+    .Help_Background_Image {
+        background-size: 100% 45vh;
+        height: 45vh;
+        max-width: 100%;
+    }
+
+    .Help_Search {
+        width: 100%;
+        height: auto;
+        padding: 0px 30px 0px 30px;
+        margin: 40px 0px 0px 0px;
+        position: absolute;
+    }
+}
+
+
+/* Scroll Animation */
+#mouse-scroll {
+    style: block;
+}
+
+#mouse-scroll {
+    position: fixed;
+    margin: auto;
+    left: 50%;
+    bottom: 20px;
+    -webkit-transform: translateX(-50%);
+    z-index: 9999;
+}
+
+#mouse-scroll span {
+    display: block;
+    width: 5px;
+    height: 5px;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    transform: rotate(45deg);
+    border-right: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+    margin: 0 0 3px 5px;
+}
+
+#mouse-scroll .mouse {
+    height: 21px;
+    width: 14px;
+    border-radius: 10px;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    border: 2px solid var(--border-color);
+    top: 170px;
+}
+
+#mouse-scroll .down-arrow-1 {
+    margin-top: 6px;
+}
+
+#mouse-scroll .down-arrow-1, #mouse-scroll .down-arrow-2, #mouse-scroll .down-arrow-3 {
+    -webkit-animation: mouse-scroll 1s infinite;
+    -moz-animation: mouse-scroll 1s infinite;
+    /* Note the semicolon here */
+}
+
+#mouse-croll .down-arrow-1 {
+    -webkit-animation-delay: .1s;
+    -moz-animation-delay: .1s;
+    -webkit-animation-direction: alternate;
+}
+
+#mouse-scroll .down-arrow-2 {
+    -webkit-animation-delay: .2s;
+    -moz-animation-delay: .2s;
+    -webkit-animation-direction: alternate;
+}
+
+#mouse-scroll .down-arrow-3 {
+    -webkit-animation-delay: .3s;
+    -moz-animation-dekay: .3s;
+    -webkit-animation-direction: alternate;
+}
+
+#mouse-scroll .mouse-in {
+    height: 5px;
+    width: 2px;
+    display: block;
+    margin: 5px auto;
+    background: var(--bg-color);
+    position: relative;
+}
+
+#mouse-scroll .mouse-in {
+    -webkit-animation: animated-mouse 1.2s ease infinite;
+    moz-animation: mouse-animated 1.2s ease infinite;
+}
+
+@-webkit-keyframes animated-mouse {
+    0% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translateY(6px);
+        -ms-transform: translateY(6px);
+        transform: translateY(6px);
+    }
+}
+
+@-webkit-keyframes mouse-scroll {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes mouse-scroll {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
