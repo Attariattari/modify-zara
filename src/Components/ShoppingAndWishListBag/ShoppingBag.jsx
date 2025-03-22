@@ -128,7 +128,7 @@ function ShoppingBag() {
     const defaultAddress = addresses.find((address) => address.isDefault);
 
     if (defaultAddress) {
-      navigate("/method-selection");
+      navigate("/Order_Summary");
     } else {
       navigate("/Address_Conform");
     }

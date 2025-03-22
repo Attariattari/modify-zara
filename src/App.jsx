@@ -207,14 +207,6 @@ function App() {
             }
           />
           <Route
-            path="/method-selection"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <FinalCartProductView />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/SelectCardsForPay"
             element={
               <ProtectedRoute redirectTo="/welcome">
