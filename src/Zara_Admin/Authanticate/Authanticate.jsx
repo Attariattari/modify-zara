@@ -77,7 +77,7 @@ function Authanticate() {
 
     const timer = setTimeout(() => {
       if (isTokenValid) {
-        window.history.back();
+        navigate("/Admin/Dashboard");
       }
     }, delayTime);
 
@@ -161,7 +161,7 @@ function Authanticate() {
         setAuthError(null);
         setAdmin(adminDetails);
         setVerified(true);
-        window.history.back();
+        navigate("/Admin/Dashboard");
         await fetchUserData();
       } else {
         setAuthError(loginResponse.message);

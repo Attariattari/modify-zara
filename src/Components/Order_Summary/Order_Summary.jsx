@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Order_Summary.css";
 import Footer from "../Footer/Footer";
-import { Link } from "react-router-dom";
-import { ZaraProducts } from "../DummyData/Data";
+import { Link, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -10,17 +9,21 @@ import "swiper/css/pagination";
 import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 import { useAddressContext } from "../../Context/AddressContext";
 import { useCart } from "../../Context/CartContext";
+import SHIPPING_AND_RETURNS from "../NewAllProducts/Offcanvice/SHIPPING_AND_RETURNS";
+import { userContext } from "../../Context/UserContext";
+
 const Order_Summary = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { addresses, loading, error, fetchAddresses } = useAddressContext();
-  const { cart, Loading, updateCartQuantity, removeFromCart } = useCart();
+  const { cart } = useCart();
+  const [drawerType, setDrawerType] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const defaultAddress = addresses.find((address) => address.isDefault);
+  const navigate = useNavigate();
+  const { token } = useContext(userContext);
   const [FullDisplayData, setFullDisplayData] = useState(
     window.innerWidth < 768
   );
-  const [expendview, setExpendview] = useState();
-  const [Totoalitemshow, setTotoalitemshow] = useState(null);
-  const defaultAddress = addresses.find((address) => address.isDefault);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -58,26 +61,12 @@ const Order_Summary = () => {
     };
   }, []);
 
-  const Totalviewshow = () => {
-    setTotoalitemshow(true);
-  };
+  useEffect(() => {
+    if (!token) {
+      navigate("/Login");
+    }
+  }, [token]);
 
-  const Totalviewfalse = () => {
-    setTotoalitemshow(false);
-  };
-  const Expendfortotal = () => {
-    setExpendview(!expendview);
-  };
-
-  const womenProducts = [
-    ZaraProducts.Women.LINEN_BLEND_ROLL_UP,
-    ZaraProducts.Women.SATINY_BLAZER,
-    ZaraProducts.Women.FITTED_BLAZER,
-    ZaraProducts.Women.ASYMMETRIC_TULLE_DRESS,
-    ZaraProducts.Women.MINIMALIST_FITTED_BLAZER,
-    ZaraProducts.Women.OVERSIZE_CRINKLE,
-    ZaraProducts.Women.OVERSIZE_CRINKLE,
-  ];
   const getDeliveryRange = (estimatedDelivery) => {
     if (!estimatedDelivery) return "Delivery date not available";
 
@@ -106,6 +95,14 @@ const Order_Summary = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const openDrawer = (drawer) => {
+    setDrawerType(drawer);
+  };
+
+  const closeDrawer = () => {
+    setDrawerType(null);
+  };
 
   return (
     <div>
@@ -311,21 +308,19 @@ const Order_Summary = () => {
                     <div className="Order_Summary_Payment_Data">
                       <div className="Order_Summary_Payment_Image">
                         <img
-                          src="https://static.zara.net/static/images/payment/NewIcon/Icons_Payment_Methods/Payments/SVG/icon-payment-paypal_new.svg"
+                          src="https://static.zara.net/static/images/payment/NewIcon/Icons_Payment_Methods/Payments/SVG/icon-payment-visa_new.svg"
                           alt=""
                         />
+                        <p>VISA</p>
                       </div>
-                      <div>
-                        <p>PAYPAL</p>
-                        <p>
-                          You will be redirected to the PayPal website, where
-                          you can finalise payment.
-                        </p>
+                      <div className="Order_Summary_Payment_Image">
+                        <img
+                          src="https://static.zara.net/static/images/payment/NewIcon/Icons_Payment_Methods/Payments/SVG/icon-payment-mastercard.svg"
+                          alt=""
+                        />
+                        <p>MASTER CARD</p>
                       </div>
                     </div>{" "}
-                    <div className="Order_Summart_Edit">
-                      <Link>EDIT</Link>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -385,67 +380,47 @@ const Order_Summary = () => {
               </div>
             </div>
           </div>
+          <SHIPPING_AND_RETURNS
+            drawerType={drawerType}
+            closeDrawer={closeDrawer}
+          />
         </div>
       )}
       <Footer />
       {isMobile ? (
         <div className="Cartpropccess-Main">
-          <div className="ExpendSVGButtonForCart">
-            <div onClick={Expendfortotal}>
-              <svg
-                class="layout-shop-footer__swipe-icon"
-                width="40"
-                height="1"
-                viewBox="0 0 40 0.5"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M0 0h40v1H0V0z"
-                ></path>
-              </svg>
-            </div>
-          </div>
-          <div className="CartMobileDataCountinues">
-            <div className="CartProccesses">
-              {!expendview && (
-                <div className="CartProccessesTotal">
-                  <div className="CartProccessesTotalTitle">
-                    <p>TOTAL PRICE</p>
-                    <div>
-                      <p>PKR = {cart.totalPrice}</p>
-                    </div>
-                  </div>
-                  <div className="CartProccessesTotalTitle">
-                    <p>SHIPPING</p>
-                    <div>
-                      <p>
-                        {defaultAddress
-                          ? `PKR = ${defaultAddress.shippingCharge}`
-                          : "Shipping not available"}
-                      </p>
-                    </div>
-                  </div>
+          <div className="CartProccesses">
+            <div className="CartProccessesTotal">
+              <div className="CartProccessesTotalTitle">
+                <p>TOTAL PRICE</p>
+                <div>
+                  <p>PKR = {cart.totalPrice}</p>
                 </div>
-              )}
-              <Link
-                className="Cartcontinuebutton"
-                to="/InterCardData"
-                style={{ width: "100%" }}
-              >
-                <button className="Contiun">CONTINUE</button>
-              </Link>
+              </div>
+              <div className="CartProccessesTotalTitle">
+                <p>SHIPPING</p>
+                <div>
+                  <p>
+                    {defaultAddress
+                      ? `PKR = ${defaultAddress.shippingCharge}`
+                      : "Shipping not available"}
+                  </p>
+                </div>
+              </div>
             </div>
+
+            <Link
+              className="Cartcontinuebutton"
+              to="/InterCardData"
+              style={{ width: "100%" }}
+            >
+              <button className="Contiun">CONTINUE</button>
+            </Link>
           </div>
         </div>
       ) : (
         <div className="Cartpropccess-Main">
-          <div
-            className={`CartProccessView`}
-            style={{ borderTop: !Totoalitemshow ? "1px solid black" : "" }}
-          >
-            <div className="CartPropssesstitle opacity-0"></div>
+          <div className={`CartProccessView`}>
             <div className="CartProccesses">
               <div className="CartProccessesTotal">
                 <div className="CartProccessesTotalTitle">

@@ -27,7 +27,6 @@ export function UserContextProvider({ children }) {
   }, [user]);
 
   useEffect(() => {
-    localStorage.setItem("admin", JSON.stringify(Admin));
     if (Admin) {
       checkTokenValidity();
       fetchUserData(); // Fetch user data immediately after setting Admin
@@ -35,7 +34,6 @@ export function UserContextProvider({ children }) {
   }, [Admin]);
 
   const handleLogout = () => {
-    console.log("Logging out...");
     setUser({ firstname: "" });
     setAdmin(null);
     setToken(null); // Clear token on logout
@@ -81,34 +79,54 @@ export function UserContextProvider({ children }) {
     try {
       const response = await axios.post(
         "http://localhost:1122/user/getUserInfo",
-        { withCredentials: true }
+        {},
+        {
+          headers: { Authenticate: `Bearer ${token}` },
+          withCredentials: true,
+        }
       );
+
+      console.log("getUserInfo Response:", response.data); // Check first response
+
       if (response.data.status === "success") {
         const userId = response.data.userId;
-        const token = response.data.token;
-        setToken(token); // Updated: Set the token state
+        const newToken = response.data.token;
+        setToken(newToken); // Updated token state
+
         const userDataResponse = await axios.get(
           `http://localhost:1122/user/Auth/${userId}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authenticate: `Bearer ${newToken}` },
             withCredentials: true,
           }
         );
 
+        console.log("Auth Response:", userDataResponse.data); // Check second response
+
         if (userDataResponse.data.status === "success") {
           setUser(userDataResponse.data.user);
         } else {
-          console.error("Failed to fetch user data");
+          console.error("Failed to fetch user data:", userDataResponse.data);
         }
+      } else {
+        console.error("getUserInfo API Error:", response.data);
       }
     } catch (error) {
-      console.error("Failed to get user info:", error);
+      if (error.response) {
+        console.error("API Error Response:", error.response.data);
+      } else if (error.request) {
+        console.error("No Response Received:", error.request);
+      } else {
+        console.error("Request Error:", error.message);
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     if (Admin) {
@@ -126,6 +144,7 @@ export function UserContextProvider({ children }) {
         setAdmin,
         authError,
         setAuthError,
+        fetchUserData,
         loading,
         setLoading,
         handleLogout,

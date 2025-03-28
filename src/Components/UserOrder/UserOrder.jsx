@@ -1,25 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
+import { userContext } from "../../Context/UserContext";
 
 function UserOrder() {
   const navigation = useNavigate();
-  function gettoken() {
-    return localStorage.getItem("token");
-  }
+  const { token } = useContext(userContext);
+
   useEffect(() => {
-    const token = gettoken();
     if (!token) {
       navigation("/Login");
-      return;
     }
-  }, []);
+  }, [token]); // Dependency add ki hai
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  return (
+  return token ? ( // Directly check kar diya
     <div>
       <div
         className="sticky top-0 z-10"
@@ -36,7 +34,7 @@ function UserOrder() {
       </div>
       <div className="pt-32">UserOrder</div>
     </div>
-  );
+  ) : null; // Agr token na ho to render hi mat kar
 }
 
 export default UserOrder;

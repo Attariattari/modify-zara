@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./WishList.css";
 import "./Css.css";
@@ -13,6 +13,7 @@ import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show
 import { useWishlist } from "../../Context/Wishlist";
 import Spinner from "../../Spinner";
 import { useCart } from "../../Context/CartContext";
+import { userContext } from "../../Context/UserContext";
 
 function truncateText(text, maxLength) {
   if (text.length <= maxLength) {
@@ -26,6 +27,7 @@ function Wishlist() {
   const navigate = useNavigate();
   const [activeButton, setActiveButton] = useState("wishlist");
   const [drawerType, setDrawerType] = useState(null);
+  const { token } = useContext(userContext);
   const [share, setShare] = useState(false);
   const {
     wishlistItems,
@@ -98,12 +100,11 @@ function Wishlist() {
     navigate("/Login");
   };
 
-  function getToken() {
-    return localStorage.getItem("token") || null;
-  }
-
-  const token = getToken();
-
+  useEffect(() => {
+    if (!token) {
+      navigate("/Login");
+    }
+  }, [token]);
   useEffect(() => {
     const handleOverflow = () => {
       const body = document.querySelector("body");

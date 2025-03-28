@@ -20,6 +20,7 @@ function AllProductDataView({ product, activeVariation, setActiveVariation }) {
       checkProductInWishlist(product._id); // ✅ Auto-check on component mount
     }
   }, [product]);
+
   useEffect(() => {
     const handleOverflow = () => {
       const body = document.querySelector("body");
@@ -249,18 +250,18 @@ function AllProductDataView({ product, activeVariation, setActiveVariation }) {
             return;
           }
 
-          await addToCart(product, activeVariation, selectedSize); // ✅ API Call
-          setSelectedSize(null); // ✅ Reset size after adding to cart
-          // ✅ Get First Image from activeVariation.image Array
-          const firstImage = activeVariation?.image?.[0] || "";
+          await addToCart(product, activeVariation, selectedSize, () => {
+            setSelectedSize(null); // ✅ Reset size after adding to cart
+            const firstImage = activeVariation?.image?.[0] || "";
 
-          // ✅ Store in tempProduct State
-          setTempProduct({
-            image: firstImage,
-            name: product.Name,
-            size: selectedSize,
+            setTempProduct({
+              image: firstImage,
+              name: product.Name,
+              size: selectedSize,
+            });
+
+            openDrawer("AddToCart"); // ✅ Ab ye sirf success pe chale ga
           });
-          openDrawer("AddToCart");
         }}
       >
         ADD TO CART

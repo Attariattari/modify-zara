@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import axios from "axios";
@@ -29,30 +29,126 @@ function validatePassword(value) {
 export default function Login() {
   const [focusedEmail, setFocusedEmail] = useState(false);
   const [focusedPassword, setFocusedPassword] = useState(false);
+  const { setUser, setAdmin, fetchUserData } = useContext(userContext);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
-  const { setUser } = useContext(userContext);
-  const navigation = useNavigate();
-
-  async function handleLogin(values) {
+  const navigate = useNavigate(); // ✅ Hook used here
+  const location = useLocation(); // ✅ useLocation to get the previous route
+  const from = location.state?.from?.pathname || "/";
+  const handleLogin = async (values) => {
     try {
+      console.log("🔵 Starting login process for:", values.email);
+
+      const checkAdminDetails = async (email) => {
+        try {
+          console.log("🔵 Checking admin details for:", email);
+          const response = await axios.post(
+            "http://localhost:1122/user/checkDetails",
+            { email }
+          );
+          console.log("✅ Admin details response:", response.data);
+          return response.data;
+        } catch (error) {
+          console.error("❌ Admin check failed", error);
+          throw new Error("Failed to check admin details. Please try again.");
+        }
+      };
+
+      console.log("🔵 Authenticating user...");
       const response = await axios.post(
         "http://localhost:1122/user/authenticate",
         {
           email: values.email,
           password: values.password,
-        }
+        },
+        { withCredentials: true }
       );
 
       const { token, user } = response.data;
-      setUser(user);
-      localStorage.setItem("token", token);
-      navigation("/");
-    } catch (err) {
-      console.log("Login failed", err);
-    }
-  }
+      console.log("✅ Authentication successful:", user);
 
+      document.cookie = `token=${token}; path=/`;
+      console.log("✅ Token stored in cookies.");
+
+      setUser(user);
+      console.log("✅ User set:", user);
+
+      const adminDetails = await checkAdminDetails(values.email);
+      if (adminDetails.status === "success" && adminDetails.pageRoll === 1) {
+        setAdmin(adminDetails);
+        fetchUserData();
+        localStorage.setItem("admin", JSON.stringify(adminDetails));
+        console.log("✅ User is an admin. Admin details set:", adminDetails);
+      } else {
+        console.log("ℹ️ User is not an admin.");
+      }
+
+      // ✅ Redirect to the previous route
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error("❌ Login failed", err);
+    }
+  };
+
+  // async function handleLogin(values) {
+  //   try {
+  //     console.log("🔵 Starting login process for:", values.email);
+
+  //     // Admin check karne ka function
+  //     const checkAdminDetails = async (email) => {
+  //       try {
+  //         console.log("🔵 Checking admin details for:", email);
+  //         const response = await axios.post(
+  //           "http://localhost:1122/user/checkDetails",
+  //           { email }
+  //         );
+  //         console.log("✅ Admin details response:", response.data);
+  //         return response.data;
+  //       } catch (error) {
+  //         console.error("❌ Admin check failed", error);
+  //         throw new Error("Failed to check admin details. Please try again.");
+  //       }
+  //     };
+
+  //     // Authentication request
+  //     console.log("🔵 Authenticating user...");
+  //     const response = await axios.post(
+  //       "http://localhost:1122/user/authenticate",
+  //       {
+  //         email: values.email,
+  //         password: values.password,
+  //       },
+  //       { withCredentials: true }
+  //     );
+
+  //     const { token, user } = response.data;
+  //     console.log("✅ Authentication successful:", user);
+
+  //     // Token ko cookies me store karna
+  //     document.cookie = `token=${token}; path=/`;
+  //     console.log("✅ Token stored in cookies.");
+
+  //     // User set karna
+  //     setUser(user);
+  //     console.log("✅ User set:", user);
+
+  //     // Admin check karna
+  //     const adminDetails = await checkAdminDetails(values.email);
+  //     if (adminDetails.status === "success" && adminDetails.pageRoll === 1) {
+  //       setAdmin(adminDetails);
+  //       console.log("✅ User is an admin. Admin details set:", adminDetails);
+  //     } else {
+  //       console.log("ℹ️ User is not an admin.");
+  //     }
+
+  //     // Jahan se user aya tha usi route par wapas bhejna
+  //     const redirectPath = location.state?.from || "/";
+  //     console.log("🔵 Redirecting user to:", redirectPath);
+  //     navigate(redirectPath);
+  //   } catch (err) {
+  //     console.error("❌ Login failed", err);
+  //   }
+  // }
   useEffect(() => {
     const handleAutoFill = () => {
       const form = document.getElementById("LoginForm");

@@ -25,7 +25,7 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
   const shouldShowLogin = currentPath !== "/Login";
   const shouldShowHelp = currentPath !== "/Help";
   const shouldShowShoppingBag = currentPath !== "/Shopping_Bag";
-  const isInputDisabled = true;
+  const { token } = useContext(userContext);
   const { cart } = useCart();
   const handleTogglePopup = () => {
     setIsLocalPopupVisible(!isLocalPopupVisible);
@@ -35,7 +35,6 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
   const handleInputClick = () => {
     navigate("/Search/Products");
   };
-
   return (
     <div ref={navbarRef} className="">
       <div className="navbarmain">
@@ -113,11 +112,11 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
             {shouldShowLogin && (
               <div>
                 <NavLink
-                  className=" NavLink Firstname"
-                  to={user.firstname ? "/User/Order" : "/Login"}
+                  className="NavLink Firstname"
+                  to={token ? "/User/Order" : "/Login"} // Token ki base pr route set ho raha hay
                   activeClassName="active"
                 >
-                  {user.firstname ? `${user.firstname}` : "LOG IN"}
+                  {token ? user?.firstname || "User" : "LOG IN"}
                 </NavLink>
               </div>
             )}
@@ -135,12 +134,12 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
             {shouldShowShoppingBag && (
               <div>
                 <NavLink
-                  to="/Shopping_Bag"
+                  to={token ? "/Shopping_Bag" : "/Login"} // Token ki base pr route set ho raha hay
                   activeClassName="active"
-                  className=" NavLink cartbut"
+                  className="NavLink cartbut"
                 >
                   Your Cart ({cart?.items?.length || 0})
-                </NavLink>{" "}
+                </NavLink>
               </div>
             )}
           </div>

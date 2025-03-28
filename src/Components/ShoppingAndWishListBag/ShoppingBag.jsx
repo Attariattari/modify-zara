@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import LikeSameWithProductData from "../NewAllProducts/SingleProductData/LikeSomeProductsDataView/LikeSameWithProductData";
@@ -10,6 +10,7 @@ import { useWishlist } from "../../Context/Wishlist";
 import Spinner from "../../Spinner";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useAddressContext } from "../../Context/AddressContext";
+import { userContext } from "../../Context/UserContext";
 
 function ShoppingBag() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function ShoppingBag() {
   const { addresses, loading, error, fetchAddresses } = useAddressContext();
   const { setProductId, wishlistStatus, checkProductInWishlist, isLoading } =
     useWishlist();
+  const { token } = useContext(userContext);
 
   useEffect(() => {
     if (!cart?.data?.items?.length) return; // ✅ Empty array case bhi handle ho gaya
@@ -44,6 +46,12 @@ function ShoppingBag() {
     setActiveButton("wishlist");
     navigate("/Wishlist");
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/Login");
+    }
+  }, [token]);
 
   useEffect(() => {
     const handleOverflow = () => {
@@ -332,7 +340,10 @@ function ShoppingBag() {
             Conditions and understand Zara's Privacy and Cookie Policy.
           </div>
           <div className="CartProccesses">
-            <div className="CardTotalShow" style={{ padding: "0px" }}>
+            <div
+              className="CardTotalShow flex gap-5"
+              style={{ padding: "0px" }}
+            >
               <div>TOTAL</div>
               <div className="flex-col">
                 <div className="">PKR = {cart.totalPrice} Only.</div>
@@ -341,9 +352,7 @@ function ShoppingBag() {
                   style={{
                     fontSize: "9px",
                   }}
-                >
-                  * BEFORE TAXES
-                </div>
+                ></div>
               </div>
             </div>
             <Link

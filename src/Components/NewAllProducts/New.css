@@ -156,6 +156,24 @@
   border-bottom: none;
 }
 
+/* 🟢 Active Color Design */
+.color-option.selected {
+  background: var(--text-color);
+  color: var(--bg-color);
+  border-color: var(--text-color);
+}
+
+.color-option.selected .color-name {
+  font-weight: bold;
+  color: var(--bg-color);
+}
+
+/* ✨ Hover Effect */
+.color-option:hover {
+  transform: scale(1.05);
+  border-color: var(--text-color);
+}
+
 .size-options {
   display: grid;
   grid-template-columns: repeat(6, 1fr);

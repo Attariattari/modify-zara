@@ -10,14 +10,24 @@ import { useParams } from "react-router-dom";
 import { useProductContext } from "../../Context/ProductContext";
 
 function New() {
-  const [selectedComponent, setSelectedComponent] = useState(
-    localStorage.getItem("selectedComponent") || "DetailsDisplay"
-  );
   const { cid, csid } = useParams(); // URL se category aur subcategory ID get karna
   const { Newdata, loading, error, fetchNewProducts } = useProductContext();
   const [isScrolled, setIsScrolled] = useState(false);
-  console.log(loading);
+  const [sortType, setSortType] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
+  const [colors, setColors] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [activeFilter, setActiveFilter] = useState(null);
+  const [sizes, setSizes] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [minMaxPrice, setMinMaxPrice] = useState([0, 100]); // Min & Max store krne ke liye
+  const filterRef = useRef(null);
+  const filteredCount = filteredData.length;
 
+  const [selectedComponent, setSelectedComponent] = useState(
+    localStorage.getItem("selectedComponent") || "DetailsDisplay"
+  );
   const handleComponentChange = (component) => {
     setSelectedComponent(component);
     localStorage.setItem("selectedComponent", component);
@@ -55,8 +65,87 @@ function New() {
     window.scrollTo(0, 0);
   }, []);
 
-  const [activeFilter, setActiveFilter] = useState(null);
-  const filterRef = useRef(null);
+  useEffect(() => {
+    if (!Newdata) return;
+
+    let sortedData = [...Newdata];
+
+    sortedData.sort((a, b) => {
+      // Pehle har product ka minimum price nikalo
+      const minPriceA = Math.min(
+        ...a.variations.map((v) => Number(v.price.real))
+      );
+      const minPriceB = Math.min(
+        ...b.variations.map((v) => Number(v.price.real))
+      );
+
+      if (sortType === "ASCENDING PRICE") {
+        return minPriceA - minPriceB;
+      } else if (sortType === "DESCENDING PRICE") {
+        return minPriceB - minPriceA;
+      } else if (sortType === "NEW") {
+        return new Date(b.created_at) - new Date(a.created_at);
+      }
+
+      return 0;
+    });
+
+    setFilteredData(sortedData);
+  }, [sortType, Newdata]);
+
+  useEffect(() => {
+    if (!Newdata) return;
+
+    const extractedColors = Newdata.flatMap((product) =>
+      product.variations.map((variation) => variation.color.name.toLowerCase())
+    );
+
+    const uniqueColors = [...new Set(extractedColors)];
+    setColors(uniqueColors);
+  }, [Newdata]);
+
+  useEffect(() => {
+    if (!Newdata) return;
+
+    let filtered = [...Newdata];
+
+    if (selectedColor) {
+      filtered = filtered.filter((product) =>
+        product.variations.some(
+          (variation) =>
+            variation.color.name.toLowerCase() === selectedColor.toLowerCase()
+        )
+      );
+    }
+
+    setFilteredData(filtered);
+  }, [selectedColor, Newdata]);
+
+  useEffect(() => {
+    if (!Newdata) return;
+
+    const extractedSizes = Newdata.flatMap((product) =>
+      product.variations.flatMap((variation) => variation.size)
+    );
+
+    const uniqueSizes = [...new Set(extractedSizes)];
+    setSizes(uniqueSizes);
+  }, [Newdata]);
+  useEffect(() => {
+    if (!Newdata) return;
+
+    let filtered = [...Newdata];
+
+    if (selectedSize) {
+      filtered = filtered.filter((product) =>
+        product.variations.some((variation) =>
+          variation.size.includes(selectedSize)
+        )
+      );
+    }
+
+    setFilteredData(filtered);
+  }, [selectedSize, Newdata]);
 
   useEffect(() => {
     if (!activeFilter) return; // Only run when a filter is active
@@ -77,17 +166,6 @@ function New() {
     setActiveFilter((prev) => (prev === filterName ? null : filterName));
   };
 
-  const colors = [
-    "red",
-    "blue",
-    "green",
-    "black",
-    "brown",
-    "white",
-    "yellow",
-    "gray",
-  ];
-
   const [isWrapped, setIsWrapped] = useState(false);
 
   useEffect(() => {
@@ -98,10 +176,43 @@ function New() {
     }
   }, [colors]);
 
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  useEffect(() => {
+    if (!Newdata || Newdata.length === 0) return;
 
-  const handleChange = (newRange) => {
-    setPriceRange(newRange);
+    const allPrices = Newdata.flatMap((product) =>
+      product.variations.map((variation) => Number(variation.price.real))
+    );
+
+    const minPrice = Math.min(...allPrices);
+    const maxPrice = Math.max(...allPrices);
+
+    setMinMaxPrice([minPrice, maxPrice]); // Min & Max Price store krna
+    setPriceRange([minPrice, maxPrice]); // Default Range bhi set krna
+  }, [Newdata]);
+
+  useEffect(() => {
+    if (!Newdata) return;
+
+    const filtered = Newdata.filter((product) =>
+      product.variations.some((variation) => {
+        const realPrice = Number(variation.price.real);
+        return realPrice >= priceRange[0] && realPrice <= priceRange[1];
+      })
+    );
+
+    setFilteredData(filtered);
+  }, [priceRange, Newdata]);
+
+  const handlePriceChange = (value) => {
+    setPriceRange(value);
+  };
+
+  const clearFilters = () => {
+    setPriceRange(minMaxPrice); // Price ko reset krna
+    setSelectedColor(""); // Color reset
+    setSelectedSize(""); // Size reset
+    setSorting(""); // Sorting reset
+    setFilteredData(originalData); // 🛠️ Ye zaroori hai, sorting ko bhi reset karega
   };
 
   return (
@@ -143,38 +254,54 @@ function New() {
               <div className="filter-box__content">
                 {activeFilter === "SORT BY" && (
                   <div className="sort-options">
-                    <div>ASCENDING PRICE</div>
-                    <div>DESCENDING PRICE</div>
-                    <div>NEW</div>
+                    <div onClick={() => setSortType("ASCENDING PRICE")}>
+                      ASCENDING PRICE
+                    </div>
+                    <div onClick={() => setSortType("DESCENDING PRICE")}>
+                      DESCENDING PRICE
+                    </div>
+                    <div onClick={() => setSortType("NEW")}>NEW</div>
                   </div>
                 )}
+
                 {activeFilter === "COLORS" && (
                   <div
                     className={`color-options ${isWrapped ? "flex-wrap" : ""}`}
                   >
                     {colors.map((color, index) => (
-                      <div className="color-option" key={index}>
+                      <div
+                        className={`color-option ${
+                          selectedColor === color ? "selected" : ""
+                        }`}
+                        key={index}
+                        onClick={() => setSelectedColor(color)}
+                      >
                         <div
                           className="color-box"
                           style={{ background: color }}
                         ></div>
-                        <span className="color-name">
-                          {color.charAt(0).toUpperCase() + color.slice(1)}
-                        </span>
+                        <span className="color-name">{color}</span>
                       </div>
                     ))}
                   </div>
                 )}
+
                 {activeFilter === "SIZE" && (
                   <div className="size-options">
-                    <div>XS</div>
-                    <div>S</div>
-                    <div>M</div>
-                    <div>L</div>
-                    <div>XL</div>
-                    <div>XXL</div>
+                    {sizes.map((size, index) => (
+                      <div
+                        key={index}
+                        className={`size-option ${
+                          selectedSize === size ? "selected" : ""
+                        }`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </div>
+                    ))}
                   </div>
                 )}
+
                 {activeFilter === "PRICE" && (
                   <div
                     style={{
@@ -191,18 +318,19 @@ function New() {
                     </div>
                     <Slider
                       range
-                      min={0}
-                      max={100}
-                      defaultValue={[0, 100]}
+                      min={minMaxPrice[0]} // Ye data ke hisaab se adjust hoga
+                      max={minMaxPrice[1]}
                       value={priceRange}
-                      onChange={handleChange}
+                      onChange={handlePriceChange} // User ka selected range update hoga
                     />
                   </div>
                 )}
 
                 <div className="filter-box__footer">
-                  <div>CLEAR</div>
-                  <div>VIEW RESULTS(00)</div>
+                  <div onClick={clearFilters} style={{ cursor: "pointer" }}>
+                    CLEAR
+                  </div>
+                  <div>VIEW RESULTS({filteredCount})</div>
                 </div>
               </div>
             </div>
@@ -256,10 +384,10 @@ function New() {
 
       <div className="New">
         {selectedComponent === "DetailsDisplay" && (
-          <DetailsDisplayProduct data={Newdata} loading={loading} />
+          <DetailsDisplayProduct data={filteredData} loading={loading} />
         )}
         {selectedComponent === "SamallDipaly" && (
-          <SamallDipalyProducts data={Newdata} loading={loading} />
+          <SamallDipalyProducts data={filteredData} loading={loading} />
         )}
       </div>
     </div>
