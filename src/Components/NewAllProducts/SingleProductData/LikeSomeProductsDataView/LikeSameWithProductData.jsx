@@ -89,7 +89,15 @@ function LikeSameWithProductData({ product }) {
   const handleNavigate = (product) => {
     navigate(`/SingleProduct/${product.Name}/${product._id}`);
   };
+  const calculateDiscountPercentage = (product) => {
+    if (!product?.variations?.[0]?.price) return null; // Agar price nahi mila toh return null
 
+    const { real, discount } = product.variations[0].price;
+
+    if (!real || !discount || discount >= real) return null; // Agar discount na ho ya galat ho
+
+    return Math.round(((real - discount) / real) * 100);
+  };
   return (
     <div className="YOU_MAY_LIKE">
       <p>YOU MAY ALSO LIKE</p>
@@ -109,6 +117,13 @@ function LikeSameWithProductData({ product }) {
               <div className="ProductGridView" key={index}>
                 <div className="Productproductimage">
                   <img src={product.MainImage} alt="" />
+                  {product.variations?.[0]?.price?.discount > 0 &&
+                    product.variations[0].price.discount <
+                      product.variations[0].price.real && (
+                      <div className="Discount-show">
+                        {calculateDiscountPercentage(product)}%
+                      </div>
+                    )}
                 </div>
                 <div className="CartButtonArea">
                   <div

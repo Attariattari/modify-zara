@@ -29,6 +29,15 @@ function DetailsDisplayProduct({ data, loading }) {
   const handleNavigate = (product) => {
     navigate(`/SingleProduct/${product.Name}/${product._id}`);
   };
+  const calculateDiscountPercentage = (product) => {
+    if (!product?.variations?.[0]?.price) return null; // Agar price nahi mila toh return null
+
+    const { real, discount } = product.variations[0].price;
+
+    if (!real || !discount || discount >= real) return null; // Agar discount na ho ya galat ho
+
+    return Math.round(((real - discount) / real) * 100);
+  };
 
   return (
     <div className="DetailedProducts">
@@ -43,6 +52,13 @@ function DetailsDisplayProduct({ data, loading }) {
               <div className="ProductGridView" key={index} title={product.Name}>
                 <div className="Productproductimage">
                   <img src={product.MainImage} alt="" />
+                  {product.variations?.[0]?.price?.discount > 0 &&
+                    product.variations[0].price.discount <
+                      product.variations[0].price.real && (
+                      <div className="Discount-show">
+                        {calculateDiscountPercentage(product)}%
+                      </div>
+                    )}
                 </div>
                 <div className="CartButtonArea">
                   <div
