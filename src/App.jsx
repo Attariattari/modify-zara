@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Routes,
   Navigate,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 import { userContext } from "./Context/UserContext.jsx";
 import "./App.css";
@@ -45,6 +46,7 @@ import Order from "./Zara_Admin/Order/Order.jsx";
 import OrderDetails from "./Zara_Admin/OrderDetails/OrderDetails.jsx";
 import Gallery from "./Zara_Admin/Gallery/Gallery";
 import Uploadimages from "./Zara_Admin/Gallery/Upload/Uploadimages.jsx";
+import OrderSummary from "./Zara_Admin/Home/Order-Summry/OrderSummry.jsx";
 
 function App() {
   const [hasVisited, setHasVisited] = useState(
@@ -87,211 +89,171 @@ function App() {
     };
   }, []);
 
+  const authRoutes = [
+    { path: "/Login", element: <Login /> },
+    { path: "/Signup", element: <Signup /> },
+  ];
+
+  const userRoutes = [
+    { path: "/Help", element: <Help /> },
+    { path: "/Shopping_Bag", element: <ShoppingBag /> },
+    { path: "/Wishlist", element: <Wishlist /> },
+    { path: "/User/Order", element: <UserOrder /> },
+    { path: "/Search/Products", element: <Search /> },
+    { path: "/Address_Conform", element: <Address_Conform /> },
+    { path: "/SelectCardsForPay", element: <SelectCardsForPay /> },
+    { path: "/InterCardData", element: <InterCardData /> },
+    { path: "/Order_Summary", element: <Order_Summary /> },
+  ];
+
+  const productRoutes = [
+    { path: "/Product/:name/:cid/:csid", element: <New /> },
+    { path: "/Product/:name/:cid", element: <New /> },
+    { path: "/SingleProduct/:name/:id", element: <SingleProduct /> },
+  ];
+  const adminRoutes = [
+    { path: "Dashboard", element: <Dashboard /> },
+    { path: "Gallery", element: <Gallery /> },
+    { path: "Gallery/upload", element: <Uploadimages /> },
+    { path: "Users", element: <User /> },
+    { path: "Manage-Users", element: <ManageUsers /> },
+    { path: "Notifications", element: <Notification /> },
+    { path: "Messages", element: <Messages /> },
+    { path: "Product", element: <Product /> },
+    { path: "Featured-Product", element: <FeaturedProduct /> },
+    { path: "Sales-Product", element: <SalesProduct /> },
+    { path: "Main-Carousel", element: <MainCarousel /> },
+    { path: "Category", element: <Catgeory /> },
+    { path: "Add-Products", element: <AddProducts /> },
+    { path: "Shopping-Cart", element: <ShoppingCart /> },
+    { path: "Order", element: <Order /> },
+    { path: "Order-Details", element: <OrderDetails /> },
+    { path: "Products-Details/:name/:id", element: <ProductsDetails /> },
+  ];
+
+  const allowedRoutes = [
+    ...userRoutes.map((route) => route.path),
+    ...productRoutes.map((route) => route.path),
+  ];
+
+  const location = useLocation();
+
+  // Check if the current route matches any allowed routes (handling dynamic routes)
+  const isAllowedRoute = useMemo(() => {
+    return allowedRoutes.some((route) => {
+      const routeRegex = new RegExp(`^${route.replace(/:[^/]+/g, "[^/]+")}$`);
+      return routeRegex.test(location.pathname);
+    });
+  }, [location.pathname]);
+
   return (
     <div>
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              hasVisited ? (
-                <Navigate to="/Home" replace />
-              ) : (
-                <Navigate to="/welcome" replace />
-              )
-            }
-          />
-          <Route
-            path="/welcome"
-            element={
-              <ProtectedWelcomeRoute redirectTo="/Home">
-                <Welcome />
-              </ProtectedWelcomeRoute>
-            }
-          />
-          <Route
-            path="/Home"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Login"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Login />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Signup"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Signup />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Help"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Help />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Shopping_Bag"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <ShoppingBag />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Wishlist"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Wishlist />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/User/Order"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <UserOrder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Search/Products"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Search />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Product/:name/:cid/:csid"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <New />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Product/:name/:cid"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <New />
-              </ProtectedRoute>
-            }
-          />
+      <Routes>
+        <Route
+          path="/"
+          element={<Navigate to={hasVisited ? "/Home" : "/welcome"} replace />}
+        />
 
+        {/* Welcome Page */}
+        <Route
+          path="/welcome"
+          element={
+            <ProtectedWelcomeRoute redirectTo="/Home">
+              <Welcome />
+            </ProtectedWelcomeRoute>
+          }
+        />
+
+        {/* Home Page */}
+        <Route
+          path="/Home"
+          element={
+            <ProtectedRoute redirectTo="/welcome">
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Authentication Routes */}
+        {authRoutes.map(({ path, element }) => (
           <Route
-            path="/SingleProduct/:name/:id"
+            key={path}
+            path={path}
             element={
-              <ProtectedRoute redirectTo="/welcome">
-                <SingleProduct />
-              </ProtectedRoute>
+              <ProtectedRoute redirectTo="/welcome">{element}</ProtectedRoute>
             }
           />
+        ))}
+
+        {/* User Routes */}
+        {userRoutes.map(({ path, element }) => (
           <Route
-            path="/Address_Conform"
+            key={path}
+            path={path}
             element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Address_Conform />
-              </ProtectedRoute>
+              <ProtectedRoute redirectTo="/welcome">{element}</ProtectedRoute>
             }
           />
+        ))}
+
+        {/* Product Routes */}
+        {productRoutes.map(({ path, element }) => (
           <Route
-            path="/SelectCardsForPay"
+            key={path}
+            path={path}
             element={
-              <ProtectedRoute redirectTo="/welcome">
-                <SelectCardsForPay />
-              </ProtectedRoute>
+              <ProtectedRoute redirectTo="/welcome">{element}</ProtectedRoute>
             }
           />
-          <Route
-            path="/InterCardData"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <InterCardData />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Order_Summary"
-            element={
-              <ProtectedRoute redirectTo="/welcome">
-                <Order_Summary />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/Admin/Autanticate" element={<Authanticate />} />
-          <Route path="/Admin/*" element={<ProtectedRoutes />}>
-            <Route element={<NavLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="Dashboard" element={<Dashboard />} />
-              <Route path="Gallery" element={<Gallery />} />
-              <Route path="Gallery/upload" element={<Uploadimages />} />
-              <Route path="Users" element={<User />} />
-              <Route path="Manage-Users" element={<ManageUsers />} />
-              <Route path="Notifications" element={<Notification />} />
-              <Route path="Messages" element={<Messages />} />
-              <Route path="Product" element={<Product />} />
-              <Route path="Featured-Product" element={<FeaturedProduct />} />
-              <Route path="Sales-Product" element={<SalesProduct />} />
-              <Route path="Main-Carousel" element={<MainCarousel />} />
+        ))}
+        <Route path="/Admin/Autanticate" element={<Authanticate />} />
+        <Route path="/Admin/*" element={<ProtectedRoutes />}>
+          <Route element={<NavLayout />}>
+            <Route index element={<Dashboard />} />
+            {adminRoutes.map(({ path, element }) => (
               <Route
-                path="Products-Details/:name/:id"
-                element={<ProductsDetails />}
+                key={path}
+                path={path} // Relative path use ho raha hai
+                element={
+                  <ProtectedRoute redirectTo="/welcome">
+                    {element}
+                  </ProtectedRoute>
+                }
               />
-
-              <Route path="Category" element={<Catgeory />} />
-              <Route path="Add-Products" element={<AddProducts />} />
-              <Route path="Shopping-Cart" element={<ShoppingCart />} />
-              <Route path="Order" element={<Order />} />
-              <Route path="Order-Details" element={<OrderDetails />} />
-            </Route>
+            ))}
           </Route>
-        </Routes>
-        {/* {hasVisited && (
-          <>
-            {isChatVisible && (
-              <div className="chat-component none">
-                <Chat toggleChatUnVisibility={toggleChatUnVisibility} />
-              </div>
-            )}
-            {!isChatVisible && (
-              <div
-                className="ChatPopupshow none"
-                onClick={toggleChatVisibility}
+        </Route>
+      </Routes>
+      {hasVisited && isAllowedRoute && (
+        <>
+          {isChatVisible && (
+            <div className="chat-component none">
+              <Chat toggleChatUnVisibility={toggleChatUnVisibility} />
+            </div>
+          )}
+          {!isChatVisible && (
+            <div className="ChatPopupshow none" onClick={toggleChatVisibility}>
+              <svg
+                width="24"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="inherit"
+                stroke="inherit"
+                className="tray__button-icon"
+                aria-label="_tray-icon_"
+                alt="tray-icon"
               >
-                <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="inherit"
-                  stroke="inherit"
-                  className="tray__button-icon"
-                  aria-label="_tray-icon_"
-                  alt="tray-icon"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M3.7 3.7h16.6v13h-8.14L7.3 20.172V16.7H3.7v-13Zm1 1v11h3.6v2.528l3.54-2.528h7.46v-11H4.7Z"
-                  ></path>
-                </svg>
-                <span className="text-gray-400">Chat</span>
-              </div>
-            )}
-          </>
-        )} */}
-      </Router>
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3.7 3.7h16.6v13h-8.14L7.3 20.172V16.7H3.7v-13Zm1 1v11h3.6v2.528l3.54-2.528h7.46v-11H4.7Z"
+                ></path>
+              </svg>
+              <span className="text-gray-400">Chat</span>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

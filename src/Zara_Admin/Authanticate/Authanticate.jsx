@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Input } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Authanticate.css";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import axios from "axios";
@@ -58,7 +58,8 @@ function Authanticate() {
   const [loading, setLoading] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [Verified, setVerified] = useState(true);
-  const { setUser, setAdmin, isTokenValid } = useContext(userContext);
+  const { setUser, setAdmin, isTokenValid, fetchUserData } =
+    useContext(userContext);
   const [authSuccess, setAuthSuccess] = useState("");
   const [authError, setAuthError] = useState("");
   const { theme } = useTheme();
@@ -71,19 +72,33 @@ function Authanticate() {
   const [isCodeExpired, setIsCodeExpired] = useState(false);
   const [timer, setTimer] = useState(120);
   const navigate = useNavigate();
+  const location = useLocation(); // Previous location capture karne ke liye
 
   useEffect(() => {
     const delayTime = 0; // 1 second delay
 
     const timer = setTimeout(() => {
       if (isTokenValid) {
-        navigate("/Admin/Dashboard");
+        const returnPath = location.state?.from || "/Admin/Dashboard";
+        navigate(returnPath);
       }
     }, delayTime);
 
-    // Cleanup the timeout if the component unmounts or dependencies change
     return () => clearTimeout(timer);
-  }, [isTokenValid, navigate]);
+  }, [isTokenValid, navigate, location]);
+
+  // useEffect(() => {
+  //   const delayTime = 0; // 1 second delay
+
+  //   const timer = setTimeout(() => {
+  //     if (isTokenValid) {
+  //       navigate("/Admin/Dashboard");
+  //     }
+  //   }, delayTime);
+
+  //   // Cleanup the timeout if the component unmounts or dependencies change
+  //   return () => clearTimeout(timer);
+  // }, [isTokenValid, navigate]);
 
   // Configure Axios to include credentials
   axios.defaults.withCredentials = true;
@@ -647,10 +662,8 @@ function Authanticate() {
                   <Form className="Authanticateform">
                     <p className="Verificationtitle">Send Reset Code.</p>
                     <div className="inputs">
-                      <Field
-                        name="email"
-                        validate={validateEmail}
-                        render={({ field }) => (
+                      <Field name="email" validate={validateEmail}>
+                        {({ field }) => (
                           <Input
                             {...field}
                             variant="standard"
@@ -662,7 +675,7 @@ function Authanticate() {
                             }}
                           />
                         )}
-                      />
+                      </Field>
                       <ErrorMessage
                         name="email"
                         component="div"
@@ -691,6 +704,61 @@ function Authanticate() {
                   </Form>
                 )}
               </Formik>
+
+              // <Formik
+              //   initialValues={{ email: "" }}
+              //   onSubmit={(values) => {
+              //     handleSendResetToken(values);
+              //   }}
+              // >
+              //   {({ errors, touched }) => (
+              //     <Form className="Authanticateform">
+              //       <p className="Verificationtitle">Send Reset Code.</p>
+              //       <div className="inputs">
+              //         <Field
+              //           name="email"
+              //           validate={validateEmail}
+              //           render={({ field }) => (
+              //             <Input
+              //               {...field}
+              //               variant="standard"
+              //               label="Email"
+              //               placeholder="Email"
+              //               className="custom-input"
+              //               style={{
+              //                 "--tw-focus-ring-color": inputFocusColor,
+              //               }}
+              //             />
+              //           )}
+              //         />
+              //         <ErrorMessage
+              //           name="email"
+              //           component="div"
+              //           className="error-message"
+              //         />
+              //       </div>
+              //       <button type="submit" className="submit-button">
+              //         Send Reset Code
+              //       </button>
+              //       {resetTokenError && (
+              //         <div
+              //           className="error-message mt-2"
+              //           style={{ color: "red" }}
+              //         >
+              //           {resetTokenError}
+              //         </div>
+              //       )}
+              //       {resetTokenSuccess && (
+              //         <div
+              //           className="success-message mt-2"
+              //           style={{ color: "green" }}
+              //         >
+              //           {resetTokenSuccess}
+              //         </div>
+              //       )}
+              //     </Form>
+              //   )}
+              // </Formik>
             )
           ) : (
             <>
@@ -710,13 +778,12 @@ function Authanticate() {
                   {({ errors, touched }) => (
                     <Form className="Authanticateform">
                       <p className="Verificationtitle">
-                        Login Your Admin Acount.
+                        Login Your Admin Account.
                       </p>
+
                       <div className="inputs">
-                        <Field
-                          name="email"
-                          validate={validateEmail}
-                          render={({ field }) => (
+                        <Field name="email" validate={validateEmail}>
+                          {({ field }) => (
                             <Input
                               {...field}
                               variant="standard"
@@ -725,18 +792,17 @@ function Authanticate() {
                               className="custom-input"
                             />
                           )}
-                        />
+                        </Field>
                         <ErrorMessage
                           name="email"
                           component="div"
                           className="error-message"
                         />
                       </div>
+
                       <div className="inputs password-input-wrapper">
-                        <Field
-                          name="password"
-                          validate={validatePassword}
-                          render={({ field }) => (
+                        <Field name="password" validate={validatePassword}>
+                          {({ field }) => (
                             <div className="password-container">
                               <Input
                                 {...field}
@@ -754,13 +820,14 @@ function Authanticate() {
                               </div>
                             </div>
                           )}
-                        />
+                        </Field>
                         <ErrorMessage
                           name="password"
                           component="div"
                           className="error-message"
                         />
                       </div>
+
                       {Verified ? (
                         <button type="submit" className="submit-button">
                           Authenticate
@@ -774,11 +841,13 @@ function Authanticate() {
                           Verify Now
                         </button>
                       )}
+
                       {authError && (
                         <div className="error-message" style={{ color: "red" }}>
                           {authError}
                         </div>
                       )}
+
                       <div className="ForgottPassword">
                         <Link
                           to="#"
@@ -791,6 +860,101 @@ function Authanticate() {
                   )}
                 </Formik>
               ) : (
+                // <Formik
+                //   initialValues={{ email: "", password: "" }}
+                //   onSubmit={(values) => {
+                //     handleAuthenticate(
+                //       values,
+                //       setAuthError,
+                //       setLoading,
+                //       navigate,
+                //       setIsVerified
+                //     );
+                //   }}
+                // >
+                //   {({ errors, touched }) => (
+                //     <Form className="Authanticateform">
+                //       <p className="Verificationtitle">
+                //         Login Your Admin Acount.
+                //       </p>
+                //       <div className="inputs">
+                //         <Field
+                //           name="email"
+                //           validate={validateEmail}
+                //           render={({ field }) => (
+                //             <Input
+                //               {...field}
+                //               variant="standard"
+                //               label="Email"
+                //               placeholder="Email"
+                //               className="custom-input"
+                //             />
+                //           )}
+                //         />
+                //         <ErrorMessage
+                //           name="email"
+                //           component="div"
+                //           className="error-message"
+                //         />
+                //       </div>
+                //       <div className="inputs password-input-wrapper">
+                //         <Field
+                //           name="password"
+                //           validate={validatePassword}
+                //           render={({ field }) => (
+                //             <div className="password-container">
+                //               <Input
+                //                 {...field}
+                //                 type={showPassword ? "text" : "password"}
+                //                 variant="standard"
+                //                 label="Password"
+                //                 placeholder="Password"
+                //                 className="custom-input"
+                //               />
+                //               <div
+                //                 className="show-password-toggle"
+                //                 onClick={() => setShowPassword(!showPassword)}
+                //               >
+                //                 {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
+                //               </div>
+                //             </div>
+                //           )}
+                //         />
+                //         <ErrorMessage
+                //           name="password"
+                //           component="div"
+                //           className="error-message"
+                //         />
+                //       </div>
+                //       {Verified ? (
+                //         <button type="submit" className="submit-button">
+                //           Authenticate
+                //         </button>
+                //       ) : (
+                //         <button
+                //           type="button"
+                //           className="submit-button"
+                //           onClick={() => setVerifyNow(true)}
+                //         >
+                //           Verify Now
+                //         </button>
+                //       )}
+                //       {authError && (
+                //         <div className="error-message" style={{ color: "red" }}>
+                //           {authError}
+                //         </div>
+                //       )}
+                //       <div className="ForgottPassword">
+                //         <Link
+                //           to="#"
+                //           onClick={() => setShowForgotPassword(true)}
+                //         >
+                //           Forgot Password?
+                //         </Link>
+                //       </div>
+                //     </Form>
+                //   )}
+                // </Formik>
                 <>
                   {createNewVerifyCode ? (
                     <Formik
@@ -804,11 +968,10 @@ function Authanticate() {
                           <p className="Verificationtitle">
                             Send Email Verify Code.
                           </p>
+
                           <div className="inputs">
-                            <Field
-                              name="email"
-                              validate={validateEmail}
-                              render={({ field }) => (
+                            <Field name="email" validate={validateEmail}>
+                              {({ field }) => (
                                 <Input
                                   {...field}
                                   variant="standard"
@@ -820,16 +983,18 @@ function Authanticate() {
                                   }}
                                 />
                               )}
-                            />
+                            </Field>
                             <ErrorMessage
                               name="email"
                               component="div"
                               className="error-message"
                             />
                           </div>
+
                           <button type="submit" className="submit-button">
                             Send Verification Code
                           </button>
+
                           {resetTokenError && (
                             <div
                               className="error-message mt-2"
@@ -871,11 +1036,10 @@ function Authanticate() {
                           <p className="Verificationtitle">
                             Verify Your Email.
                           </p>
+
                           <div className="inputs">
-                            <Field
-                              name="email"
-                              validate={validateEmail}
-                              render={({ field }) => (
+                            <Field name="email" validate={validateEmail}>
+                              {({ field }) => (
                                 <Input
                                   {...field}
                                   variant="standard"
@@ -889,18 +1053,20 @@ function Authanticate() {
                                   disabled={showForgotPasswordLink}
                                 />
                               )}
-                            />
+                            </Field>
                             <ErrorMessage
                               name="email"
                               component="div"
                               className="error-message"
                             />
                           </div>
+
                           <div className="inputs password-input-wrapper">
                             <Field
                               name="verify"
                               validate={validateVarification}
-                              render={({ field }) => (
+                            >
+                              {({ field }) => (
                                 <div className="verification-code-container">
                                   <Input
                                     {...field}
@@ -918,13 +1084,14 @@ function Authanticate() {
                                   />
                                 </div>
                               )}
-                            />
+                            </Field>
                             <ErrorMessage
                               name="verify"
                               component="div"
                               className="error-message"
                             />
                           </div>
+
                           {!showForgotPasswordLink && (
                             <button
                               type="submit"
@@ -934,6 +1101,7 @@ function Authanticate() {
                               Verify Now
                             </button>
                           )}
+
                           {showForgotPasswordLink && (
                             <button
                               type="button"
@@ -944,6 +1112,7 @@ function Authanticate() {
                               Get New Verification Code?
                             </button>
                           )}
+
                           {successMessage && (
                             <div
                               className="success-message"
@@ -952,6 +1121,7 @@ function Authanticate() {
                               {successMessage}
                             </div>
                           )}
+
                           {smsError && (
                             <div
                               className="error-message"
@@ -960,6 +1130,7 @@ function Authanticate() {
                               {smsError}
                             </div>
                           )}
+
                           {!showForgotPasswordLink && (
                             <div className="ForgottPassword">
                               <Link to="#" onClick={handleNewVerificationCode}>

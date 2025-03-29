@@ -254,13 +254,30 @@ function New() {
               <div className="filter-box__content">
                 {activeFilter === "SORT BY" && (
                   <div className="sort-options">
-                    <div onClick={() => setSortType("ASCENDING PRICE")}>
+                    <div
+                      className={`sort-option ${
+                        sortType === "ASCENDING PRICE" ? "selected" : ""
+                      }`}
+                      onClick={() => setSortType("ASCENDING PRICE")}
+                    >
                       ASCENDING PRICE
                     </div>
-                    <div onClick={() => setSortType("DESCENDING PRICE")}>
+                    <div
+                      className={`sort-option ${
+                        sortType === "DESCENDING PRICE" ? "selected" : ""
+                      }`}
+                      onClick={() => setSortType("DESCENDING PRICE")}
+                    >
                       DESCENDING PRICE
                     </div>
-                    <div onClick={() => setSortType("NEW")}>NEW</div>
+                    <div
+                      className={`sort-option ${
+                        sortType === "NEW" ? "selected" : ""
+                      }`}
+                      onClick={() => setSortType("NEW")}
+                    >
+                      NEW
+                    </div>
                   </div>
                 )}
 

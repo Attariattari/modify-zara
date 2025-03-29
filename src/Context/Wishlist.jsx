@@ -65,7 +65,6 @@ export const WishlistProvider = ({ children }) => {
           },
           {}
         );
-
         // Ek hi dafa state update hogi
         setWishlistStatus((prev) => ({ ...prev, ...updatedStatus }));
       } else {
@@ -145,9 +144,10 @@ export const WishlistProvider = ({ children }) => {
           }
         );
 
+        // Assuming the response contains the updated isWishlist status
         setWishlistStatus((prev) => ({
           ...prev,
-          [productId]: true,
+          [productId]: response.data.isWishlist, // Update the wishlist status based on the response
         }));
 
         Swal.fire({
@@ -156,7 +156,7 @@ export const WishlistProvider = ({ children }) => {
           text: "Product added to wishlist successfully!",
         });
 
-        getWishlist(); // ✅ Refresh wishlist after adding
+        getWishlist(); // Refresh the wishlist after adding
       } catch (error) {
         Swal.fire({
           icon: "error",

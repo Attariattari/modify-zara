@@ -1,12 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { userContext } from "../Context/UserContext";
 import axios from "axios";
 
 const ProtectedRoutes = () => {
-  const { user, setUser, Admin, setAdmin } = useContext(userContext);
+  const { setUser, token, setAdmin } = useContext(userContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
+
     const checkTokenValidity = async () => {
       try {
         const response = await axios.post(
@@ -15,17 +21,20 @@ const ProtectedRoutes = () => {
           { withCredentials: true }
         );
 
-        if (response.data.status !== "success") {
+        if (response.data.status === "success") {
+          setIsAuthenticated(true);
+        } else {
           throw new Error("Token is invalid or expired");
         }
       } catch (error) {
         console.error("Token check failed:", error.message);
         handleLogout();
+        setIsAuthenticated(false);
       }
     };
 
     const handleLogout = () => {
-      setUser({ firstname: "" });
+      setUser(null);
       setAdmin(null);
       localStorage.removeItem("user");
       localStorage.removeItem("admin");
@@ -33,9 +42,13 @@ const ProtectedRoutes = () => {
     };
 
     checkTokenValidity();
-  }, [setUser, setAdmin]);
+  }, [token, setUser, setAdmin]);
 
-  if (!Admin) {
+  if (isAuthenticated === null) {
+    return <p>Loading...</p>;
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to="/Admin/Autanticate" />;
   }
 

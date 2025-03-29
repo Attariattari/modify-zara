@@ -31,7 +31,6 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
     setIsLocalPopupVisible(!isLocalPopupVisible);
     toggleSidePopup();
   };
-
   const handleInputClick = () => {
     navigate("/Search/Products");
   };

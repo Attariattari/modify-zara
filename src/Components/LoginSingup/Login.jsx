@@ -29,7 +29,8 @@ function validatePassword(value) {
 export default function Login() {
   const [focusedEmail, setFocusedEmail] = useState(false);
   const [focusedPassword, setFocusedPassword] = useState(false);
-  const { setUser, setAdmin, fetchUserData } = useContext(userContext);
+  const { setUser, setAdmin, fetchUserData, token, isTokenValid } =
+    useContext(userContext);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate(); // ✅ Hook used here
@@ -177,7 +178,18 @@ export default function Login() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  useEffect(() => {
+    const delayTime = 0; // 1 second delay
 
+    const timer = setTimeout(() => {
+      if (token) {
+        const returnPath = location.state?.from || "/";
+        navigate(returnPath);
+      }
+    }, delayTime);
+
+    return () => clearTimeout(timer);
+  }, [token, navigate, location]);
   return (
     <div className="">
       <div

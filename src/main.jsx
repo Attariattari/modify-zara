@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom"; // ✅ Add this
 import App from "./App.jsx";
 import "./index.css";
 import UserContextWrapper from "./Context/UserContextWrapper.jsx";
@@ -13,25 +14,30 @@ import { AddressProvider } from "./Context/AddressContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <UserContextWrapper>
-      <ThemeProvider>
-        <ProductProvider>
-          <MeasureProvider>
-            <SidebarProvider>
-              <WishlistProvider>
-                <CartProvider>
-                  <AddressProvider>
-                    <App />
-                  </AddressProvider>
-                </CartProvider>
-              </WishlistProvider>
-            </SidebarProvider>
-          </MeasureProvider>
-        </ProductProvider>
-      </ThemeProvider>
-    </UserContextWrapper>
+    <BrowserRouter>
+      {" "}
+      {/* ✅ Wrap everything inside BrowserRouter */}
+      <UserContextWrapper>
+        <ThemeProvider>
+          <ProductProvider>
+            <MeasureProvider>
+              <SidebarProvider>
+                <WishlistProvider>
+                  <CartProvider>
+                    <AddressProvider>
+                      <App />
+                    </AddressProvider>
+                  </CartProvider>
+                </WishlistProvider>
+              </SidebarProvider>
+            </MeasureProvider>
+          </ProductProvider>
+        </ThemeProvider>
+      </UserContextWrapper>
+    </BrowserRouter>
   </React.StrictMode>
 );
+
 // {" "}
 //                   <ToastContainer
 //                     position="top-right"
