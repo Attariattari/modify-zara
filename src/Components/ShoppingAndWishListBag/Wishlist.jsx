@@ -14,6 +14,7 @@ import { useWishlist } from "../../Context/Wishlist";
 import Spinner from "../../Spinner";
 import { useCart } from "../../Context/CartContext";
 import { userContext } from "../../Context/UserContext";
+import Navbar from "../Navbar/Navbar";
 
 function truncateText(text, maxLength) {
   if (text.length <= maxLength) {
@@ -151,7 +152,7 @@ function Wishlist() {
             backgroundColor: "var(--bg-color)",
           }}
         >
-          <NavBar_Show_After_Cart />
+          <Navbar />
           {token && (
             <div className="Wishlist_Buttons_For_Controls mt-6">
               <p

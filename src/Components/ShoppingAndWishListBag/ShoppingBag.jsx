@@ -11,6 +11,7 @@ import Spinner from "../../Spinner";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { useAddressContext } from "../../Context/AddressContext";
 import { userContext } from "../../Context/UserContext";
+import Navbar from "../Navbar/Navbar";
 
 function ShoppingBag() {
   const navigate = useNavigate();
@@ -157,7 +158,7 @@ function ShoppingBag() {
             backgroundColor: "var(--bg-color)",
           }}
         >
-          <NavBar_Show_After_Cart />
+          <Navbar />
           <div className="text-black mt-6 ShippingFavoButton">
             <button
               className={
@@ -362,7 +363,7 @@ function ShoppingBag() {
                 handlecartdata(cart);
               }}
             >
-              <button className="Contiun">CONTINUE</button>
+              <button className="CONTINUE">CONTINUE</button>
             </Link>
           </div>
         </div>

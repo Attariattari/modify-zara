@@ -11,6 +11,7 @@ import { useAddressContext } from "../../Context/AddressContext";
 import { useCart } from "../../Context/CartContext";
 import SHIPPING_AND_RETURNS from "../NewAllProducts/Offcanvice/SHIPPING_AND_RETURNS";
 import { userContext } from "../../Context/UserContext";
+import Navbar from "../Navbar/Navbar";
 
 const Order_Summary = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,16 +25,6 @@ const Order_Summary = () => {
   const [FullDisplayData, setFullDisplayData] = useState(
     window.innerWidth < 768
   );
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
   useEffect(() => {
     fetchAddresses();
   }, []);
@@ -60,7 +51,16 @@ const Order_Summary = () => {
       window.removeEventListener("resize", handleDataView);
     };
   }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   useEffect(() => {
     if (!token) {
       navigate("/Login");
@@ -106,9 +106,14 @@ const Order_Summary = () => {
 
   return (
     <div>
-      <div className="sticky top-0 z-10 ">
-        <div className={`absolute w-full ${isScrolled ? "bg-white" : ""}`}>
-          <NavBar_Show_After_Cart />
+      <div
+        className={`sticky top-0 z-10`}
+        style={{
+          backgroundColor: isScrolled ? "var(--bg-color)" : "transparent",
+        }}
+      >
+        <div className="absolute w-full">
+          <Navbar />
         </div>
       </div>
 

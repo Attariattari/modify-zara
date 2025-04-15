@@ -3,6 +3,7 @@ import "./InterCardData.css";
 import Footer from "../../Footer/Footer";
 import { Link } from "react-router-dom";
 import NavBar_Show_After_Cart from "../../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
+import Navbar from "../../Navbar/Navbar";
 
 const InterCardData = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -159,7 +160,7 @@ const InterCardData = () => {
             backgroundColor: isScrolled ? "var(--bg-color)" : "transparent",
           }}
         >
-          <NavBar_Show_After_Cart />
+          <Navbar />
         </div>
       </div>
       <div className="InterCardData">

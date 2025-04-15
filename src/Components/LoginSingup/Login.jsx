@@ -91,65 +91,6 @@ export default function Login() {
     }
   };
 
-  // async function handleLogin(values) {
-  //   try {
-  //     console.log("🔵 Starting login process for:", values.email);
-
-  //     // Admin check karne ka function
-  //     const checkAdminDetails = async (email) => {
-  //       try {
-  //         console.log("🔵 Checking admin details for:", email);
-  //         const response = await axios.post(
-  //           "http://localhost:1122/user/checkDetails",
-  //           { email }
-  //         );
-  //         console.log("✅ Admin details response:", response.data);
-  //         return response.data;
-  //       } catch (error) {
-  //         console.error("❌ Admin check failed", error);
-  //         throw new Error("Failed to check admin details. Please try again.");
-  //       }
-  //     };
-
-  //     // Authentication request
-  //     console.log("🔵 Authenticating user...");
-  //     const response = await axios.post(
-  //       "http://localhost:1122/user/authenticate",
-  //       {
-  //         email: values.email,
-  //         password: values.password,
-  //       },
-  //       { withCredentials: true }
-  //     );
-
-  //     const { token, user } = response.data;
-  //     console.log("✅ Authentication successful:", user);
-
-  //     // Token ko cookies me store karna
-  //     document.cookie = `token=${token}; path=/`;
-  //     console.log("✅ Token stored in cookies.");
-
-  //     // User set karna
-  //     setUser(user);
-  //     console.log("✅ User set:", user);
-
-  //     // Admin check karna
-  //     const adminDetails = await checkAdminDetails(values.email);
-  //     if (adminDetails.status === "success" && adminDetails.pageRoll === 1) {
-  //       setAdmin(adminDetails);
-  //       console.log("✅ User is an admin. Admin details set:", adminDetails);
-  //     } else {
-  //       console.log("ℹ️ User is not an admin.");
-  //     }
-
-  //     // Jahan se user aya tha usi route par wapas bhejna
-  //     const redirectPath = location.state?.from || "/";
-  //     console.log("🔵 Redirecting user to:", redirectPath);
-  //     navigate(redirectPath);
-  //   } catch (err) {
-  //     console.error("❌ Login failed", err);
-  //   }
-  // }
   useEffect(() => {
     const handleAutoFill = () => {
       const form = document.getElementById("LoginForm");
@@ -321,7 +262,7 @@ export default function Login() {
                 )}
               </div>
               <button className="Loginbutton" type="submit">
-                Log in
+                LOG IN
               </button>
               <div className="Fogotten">
                 <Link to="#">Have you forgotten your password?</Link>
@@ -330,7 +271,9 @@ export default function Login() {
           </Form>
         </Formik>
         <div className="singuparea">
-          <p className="singuptext font-extralight">NEED AN ACCOUNT?</p>
+          <p className="singuptext font-extralight uppercase">
+            do you need an account?
+          </p>
           <Link className="Registerbutton" to="/Signup">
             REGISTER
           </Link>

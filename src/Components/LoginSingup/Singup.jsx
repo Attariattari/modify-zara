@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Singup.css";
 import Navbar from "../Navbar/Navbar";
@@ -340,6 +340,14 @@ function Signup() {
               </Form>
             )}
           </Formik>
+        </div>
+        <div className="singuparea">
+          <p className="singuptext font-extralight">
+            ALREADY YOU HAVE AN ACOUNT?
+          </p>
+          <Link className="Registerbutton" to="/Login">
+            LOG IN
+          </Link>
         </div>
       </div>
       <Footer />
