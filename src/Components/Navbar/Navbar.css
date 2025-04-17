@@ -313,11 +313,10 @@
 .Navbar-login {
   font-weight: 500;
   font-size: 0.95rem;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
   padding: 6px 12px;
   border: 1px solid #ccc;
-  border-radius: 20px;
   transition: all 0.3s ease;
 }
 

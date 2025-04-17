@@ -295,73 +295,29 @@ export default function Home() {
     const slides = [];
 
     if (state.selectedProducts.length > 0) {
-      if (state.selectedProducts.length === 1) {
-        // 🟢 Single New Product Slide
-        slides.push(
-          <SwiperSlide
-            key={`new-single-product-slide-${state.currentCategory}`}
-          >
-            <div
+      const firstProduct = state.selectedProducts[0];
+
+      slides.push(
+        <SwiperSlide key={`new-single-product-slide-${state.currentCategory}`}>
+          <div className="w-full h-full flex justify-center items-center relative">
+            <img
+              src={firstProduct.MainImage}
+              alt={firstProduct.Name || "Product Image"}
+              className="object-cover md:max-w-[100%] lg:max-w-[600px] lg:max-h-[400px]"
               onClick={() => {
                 const { MainCategoryName, _id: MainCategoryId } =
-                  state.selectedProducts[0].category;
-
+                  firstProduct.category;
                 navigate(`/Product/${MainCategoryName}/${MainCategoryId}`);
               }}
-              className="w-full h-full flex justify-center items-center md:block md:w-full md:h-auto lg:flex lg:justify-center lg:items-center"
-            >
-              <img
-                src={state.selectedProducts[0].MainImage}
-                alt={state.selectedProducts[0].Name || "Product Image"}
-                className="w-full h-auto object-cover md:max-w-[100%] lg:max-w-[50%]"
-              />
-              {state.selectedProducts[0].new && (
-                <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold">
-                  NEW
-                </h3>
-              )}
-            </div>
-          </SwiperSlide>
-        );
-      } else {
-        // 🟢 Multiple New Products Slide (Grid Layout)
-        slides.push(
-          <SwiperSlide key={`new-products-slide-${state.currentCategory}`}>
-            <div className="flex w-full h-full overflow-x-auto">
-              {state.selectedProducts.map((product, index) => (
-                <div
-                  key={`${product._id}-${index}`}
-                  onClick={() => {
-                    const { MainCategoryName, _id: MainCategoryId } =
-                      product.category;
-
-                    navigate(`/Product/${MainCategoryName}/${MainCategoryId}`);
-                  }}
-                  className={`relative shrink-0 overflow-hidden ${
-                    isMobile ? (index === 0 ? "w-full" : "hidden") : "w-1/2"
-                  } h-full`}
-                >
-                  <img
-                    src={product.MainImage}
-                    alt={product.Name || "Product Image"}
-                    className="w-full h-full object-cover object-top"
-                  />
-                  {!isMobile && index % 2 !== 0 && product.new && (
-                    <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold z-10">
-                      NEW
-                    </h3>
-                  )}
-                  {isMobile && product.new && (
-                    <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold z-10">
-                      NEW
-                    </h3>
-                  )}
-                </div>
-              ))}
-            </div>
-          </SwiperSlide>
-        );
-      }
+            />
+            {firstProduct.new && (
+              <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold">
+                NEW
+              </h3>
+            )}
+          </div>
+        </SwiperSlide>
+      );
     }
 
     const groupedByCsid = {};
@@ -386,59 +342,21 @@ export default function Home() {
     Object.keys(groupedByCsid).forEach((csid) => {
       const groupedProducts = groupedByCsid[csid];
 
-      // // 🟢 Multi-Product Slides (Grouped)
-      if (groupedProducts.length > 1) {
-        multiProductSlides.push(
-          <SwiperSlide
-            key={`multi-${csid}`}
-            onClick={() =>
-              navigate(
-                `/Product/${groupedProducts[0]?.cn}/${groupedProducts[0]?.cid}/${groupedProducts[0]?.csid}`
-              )
-            }
-          >
-            <div className="relative w-full h-full">
-              <div className="flex w-full h-full md:block">
-                {groupedProducts.slice(0, 3).map((product, index) => (
-                  <img
-                    key={index}
-                    src={product.MainImage}
-                    alt={product.Name}
-                    className="Swiper_Slider_Images md:w-full md:h-auto"
-                    style={{
-                      width: `${100 / groupedProducts.length}%`,
-                      height: "100%",
-                      flexShrink: 0,
-                      objectFit: "cover",
-                    }}
-                  />
-                ))}
-              </div>
-              <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold">
-                {groupedProducts[0]?.csn || "No Name Available"}
-              </h3>
-            </div>
-          </SwiperSlide>
-        );
-      }
-
-      // 🟢 Single Product Slides
       if (groupedProducts.length > 0) {
-        const firstProduct = groupedProducts[0]; // Pehla product select kiya
+        const firstProduct = groupedProducts[0]; // Pehla product
+
         singleProductSlides.push(
-          <SwiperSlide
-            key={`single-${firstProduct.csid}`}
-            onClick={() =>
-              navigate(
-                `/Product/${firstProduct.cn}/${firstProduct.cid}/${firstProduct.csid}`
-              )
-            }
-          >
-            <div className="w-full h-full flex justify-center items-center md:block md:w-full md:h-auto lg:flex lg:justify-center lg:items-center relative">
+          <SwiperSlide key={`single-${firstProduct.csid}`}>
+            <div className="w-full h-full flex justify-center items-center relative">
               <img
-                src={firstProduct.MainImage} // Pehli product ki MainImage show karega
+                src={firstProduct.MainImage}
                 alt={firstProduct.Name}
-                className="w-full h-auto object-cover md:max-w-[100%] lg:max-w-[50%]"
+                className="object-cover md:max-w-[100%] lg:max-w-[600px] lg:max-h-[400px]"
+                onClick={() =>
+                  navigate(
+                    `/Product/${firstProduct.cn}/${firstProduct.cid}/${firstProduct.csid}`
+                  )
+                }
               />
               <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold">
                 {firstProduct.csn || "No Name Available"}

@@ -63,10 +63,6 @@ input:-moz-autofill {
     transition: border-color 0.3s ease;
 }
 
-input:focus {
-    border-bottom: 1px solid forestgreen !important;
-}
-
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
