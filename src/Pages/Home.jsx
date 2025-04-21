@@ -397,15 +397,15 @@ export default function Home() {
         </div>
       ) : (
         <>
-          <div className="sticky top-0 z-10 Home_navbar ">
-            <div className=" bg-transparent w-full">
-              <Navbar />
-            </div>
-            <div className="CategoryButtons">
+          {/* Sticky Navbar */}
+          <div className="sticky top-0 z-10 bg-white">
+            <Navbar />
+            {/* <div className="CategoryButtons">
               <div className="categoriesButtons">{getCategoryButtons()}</div>
-            </div>
+            </div>{" "} */}
           </div>
-          <div className="SwiperArea">
+
+          <div className="SwiperArea mt-0">
             <div className="NavigationButtons">
               <div>
                 <IoIosArrowBack

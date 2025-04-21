@@ -5,7 +5,7 @@ body.light {
       rgba(238, 174, 202, 1) 0%,
       rgba(148, 187, 233, 1) 100%);
   --text-color: black;
-  --border-color: #000000;
+  --border-color: #5e5e5e;
   --scrollbar-bg: #f1f1f100;
   --scrollbar-thumb: #090909;
   --scrollbar-thumb-hover: #555;
