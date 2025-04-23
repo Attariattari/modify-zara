@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./Home.css";
 import Navbar from "../Components/Navbar/Navbar";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { IoMdArrowForward, IoMdArrowBack } from "react-icons/io";
 import SocialSlidepage from "../Components/SocialPageforHome/SocialSlidepage";
 import { useNavigate } from "react-router-dom";
 import { useProductContext } from "../Context/ProductContext";
@@ -299,11 +299,11 @@ export default function Home() {
 
       slides.push(
         <SwiperSlide key={`new-single-product-slide-${state.currentCategory}`}>
-          <div className="w-full h-full flex justify-center items-center relative">
+          <div className="w-full h-full flex justify-center items-center">
             <img
               src={firstProduct.MainImage}
-              alt={firstProduct.Name || "Product Image"}
-              className="object-cover md:max-w-[100%] lg:max-w-[600px] lg:max-h-[400px]"
+              alt={firstProduct.Name}
+              className="object-contain cursor-pointer  relative md:max-w-[85%] md:max-h-[90%] lg:max-w-[85%] lg:max-h-[90%]"
               onClick={() => {
                 const { MainCategoryName, _id: MainCategoryId } =
                   firstProduct.category;
@@ -311,9 +311,7 @@ export default function Home() {
               }}
             />
             {firstProduct.new && (
-              <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold">
-                NEW
-              </h3>
+              <div className="new-tag-bottom-right">NEW</div>
             )}
           </div>
         </SwiperSlide>
@@ -347,20 +345,20 @@ export default function Home() {
 
         singleProductSlides.push(
           <SwiperSlide key={`single-${firstProduct.csid}`}>
-            <div className="w-full h-full flex justify-center items-center relative">
+            <div className="w-full h-full flex justify-center items-center">
               <img
                 src={firstProduct.MainImage}
                 alt={firstProduct.Name}
-                className="object-cover md:max-w-[100%] lg:max-w-[600px] lg:max-h-[400px]"
+                className="object-contain cursor-pointer relative md:max-w-[85%] md:max-h-[90%] lg:max-w-[85%] lg:max-h-[90%]"
                 onClick={() =>
                   navigate(
                     `/Product/${firstProduct.cn}/${firstProduct.cid}/${firstProduct.csid}`
                   )
                 }
               />
-              <h3 className="absolute bottom-3 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded-md text-sm font-semibold">
+              <div className="new-tag-bottom-right">
                 {firstProduct.csn || "No Name Available"}
-              </h3>
+              </div>
             </div>
           </SwiperSlide>
         );
@@ -398,23 +396,20 @@ export default function Home() {
       ) : (
         <>
           {/* Sticky Navbar */}
-          <div className="sticky top-0 z-10 bg-white">
+          <div className="sticky top-0 z-10">
             <Navbar />
-            {/* <div className="CategoryButtons">
-              <div className="categoriesButtons">{getCategoryButtons()}</div>
-            </div>{" "} */}
           </div>
 
           <div className="SwiperArea mt-0">
             <div className="NavigationButtons">
               <div>
-                <IoIosArrowBack
+                <IoMdArrowBack
                   onClick={handlePrevCategory}
                   className="arrow-icon cursor-pointer"
                 />
               </div>
               <div>
-                <IoIosArrowForward
+                <IoMdArrowForward
                   onClick={handleNextCategory}
                   className="arrow-icon cursor-pointer"
                 />
@@ -431,8 +426,9 @@ export default function Home() {
                 delay: 3000,
                 disableOnInteraction: false,
               }}
+              autoHeight={true}
               modules={[Mousewheel, Autoplay, Pagination]}
-              className="mySwiper relative cursor-pointer"
+              className="mySwiper relative"
               onSlideChange={() => {}}
               onTransitionEnd={() => {}}
               pagination={false}

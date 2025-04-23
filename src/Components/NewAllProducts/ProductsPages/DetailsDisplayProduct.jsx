@@ -30,11 +30,12 @@ function DetailsDisplayProduct({ data, loading }) {
     navigate(`/SingleProduct/${product.Name}/${product._id}`);
   };
   const calculateDiscountPercentage = (product) => {
-    if (!product?.variations?.[0]?.price) return null; // Agar price nahi mila toh return null
+    if (!product?.variations?.[0]?.price) return null;
 
-    const { real, discount } = product.variations[0].price;
+    const real = Number(product.variations[0].price.real);
+    const discount = Number(product.variations[0].price.discount);
 
-    if (!real || !discount || discount >= real) return null; // Agar discount na ho ya galat ho
+    if (!real || !discount || discount >= real) return null;
 
     return Math.round(((real - discount) / real) * 100);
   };
@@ -129,7 +130,7 @@ function DetailsDisplayProduct({ data, loading }) {
                         product.variations[0].price.discount <
                           product.variations[0].price.real ? (
                           <>
-                            <span className="discount-price text-red-500 font-bold">
+                            <span className="discount-price text-green-900 font-bold">
                               Rs. {product.variations[0].price.discount}
                             </span>
                             <span

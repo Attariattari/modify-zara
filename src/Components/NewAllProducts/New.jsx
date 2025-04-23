@@ -223,7 +223,7 @@ function New() {
           backgroundColor: isScrolled ? "var(--bg-color)" : "transparent",
         }}
       >
-        <div className="absolute w-full">
+        <div className=" w-full">
           <Navbar />
         </div>
         <div className="Productfilterveiw">

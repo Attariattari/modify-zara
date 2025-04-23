@@ -15,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 140px 0px 14px 0px;
+  padding: 10px 0px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background-color: var(--bg-color);
   transition: all 0.3s ease-in-out;
@@ -50,7 +50,7 @@
 
 .filter-box {
   position: absolute;
-  top: 180px;
+  top: 140px;
   left: 100px;
   width: 540px;
   border: 1px solid var(--border-color);
