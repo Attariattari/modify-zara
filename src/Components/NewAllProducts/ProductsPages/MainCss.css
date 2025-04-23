@@ -103,7 +103,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   transition: all 0.6s ease;
-  border-top: 1px solid var(--border-color);
+  gap: 10px;
 }
 
 /* New Data */
