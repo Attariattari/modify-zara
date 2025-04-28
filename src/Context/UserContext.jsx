@@ -33,14 +33,52 @@ export function UserContextProvider({ children }) {
     }
   }, [Admin]);
 
-  const handleLogout = () => {
-    setUser({ firstname: "" });
-    setAdmin(null);
-    setToken(null); // Clear token on logout
-    localStorage.removeItem("user");
-    localStorage.removeItem("admin");
-    Cookies.remove("token", { path: "/" });
-    setIsTokenValid(false);
+  // const handleLogout = () => {
+  //   setAdmin(null);
+  //   setToken(null); // Clear token on logout
+  //   localStorage.removeItem("user");
+  //   localStorage.removeItem("admin");
+  //   Cookies.remove("token", { path: "/" });
+  //   setIsTokenValid(false);
+  // };
+  const handleLogout = async () => {
+    try {
+      setLoading(true); // 🔵 Start loading
+      console.log("🔵 Starting logout process...");
+
+      const response = await axios.post(
+        "http://localhost:1122/user/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      if (response.data.status === "success") {
+        console.log("✅ Backend logout successful.");
+
+        // Clear frontend states and storage
+        setAdmin(null);
+        setToken(null);
+        setUser(null);
+        setIsTokenValid(false);
+
+        localStorage.removeItem("user");
+        localStorage.removeItem("admin");
+
+        Cookies.remove("token", { path: "/" });
+        Cookies.remove("userId", { path: "/" });
+
+        console.log("✅ Frontend logout cleanup done.");
+
+        // Redirect to login or home
+        navigate("/login", { replace: true });
+      } else {
+        console.error("❌ Backend logout failed:", response.data.message);
+      }
+    } catch (error) {
+      console.error("❌ Logout error:", error);
+    } finally {
+      setLoading(false); // 🔵 Always stop loading, success or error dono case me
+    }
   };
 
   const scheduleAutoLogout = (time) => {
@@ -86,8 +124,6 @@ export function UserContextProvider({ children }) {
         }
       );
 
-      console.log("getUserInfo Response:", response.data); // Check first response
-
       if (response.data.status === "success") {
         const userId = response.data.userId;
         const newToken = response.data.token;
@@ -100,8 +136,6 @@ export function UserContextProvider({ children }) {
             withCredentials: true,
           }
         );
-
-        console.log("Auth Response:", userDataResponse.data); // Check second response
 
         if (userDataResponse.data.status === "success") {
           setUser(userDataResponse.data.user);

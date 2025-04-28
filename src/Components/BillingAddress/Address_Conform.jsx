@@ -3,10 +3,10 @@ import Footer from "./../Footer/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import "./Css.css";
 import { countries } from "./../DummyData/Data";
-import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 import { useCart } from "../../Context/CartContext";
 import { useAddressContext } from "../../Context/AddressContext";
 import Spinner from "../../Spinner";
+import Navbar from "../Navbar/Navbar";
 
 function Address_Conform() {
   const { cart, Loading } = useCart();
@@ -281,7 +281,7 @@ function Address_Conform() {
             backgroundColor: "var(--bg-color)",
           }}
         >
-          <NavBar_Show_After_Cart />
+          <Navbar />
         </div>
       </div>
       <div>

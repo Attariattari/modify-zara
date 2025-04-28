@@ -9,7 +9,6 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import WishlistProducts from "./WishlistProducts/WishlistProducts";
-import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 import { useWishlist } from "../../Context/Wishlist";
 import Spinner from "../../Spinner";
 import { useCart } from "../../Context/CartContext";

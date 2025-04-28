@@ -7,7 +7,6 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import SHIPPING_AND_RETURNS from "../NewAllProducts/Offcanvice/SHIPPING_AND_RETURNS";
-import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 import { useCart } from "../../Context/CartContext";
 import { useAddressContext } from "../../Context/AddressContext";
 const FinalCartProductView = () => {
@@ -86,9 +85,7 @@ const FinalCartProductView = () => {
           style={{
             backgroundColor: isScrolled ? "var(--bg-color)" : "transparent",
           }}
-        >
-          <NavBar_Show_After_Cart />
-        </div>
+        ></div>
       </div>
       <div className="FinalCartProductView">
         <div className="FinalView">

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./SelectCardsForPay.css";
 import Footer from "../Footer/Footer";
 import { Link } from "react-router-dom";
-import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 
 const SelectCardsForPay = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -63,9 +62,7 @@ const SelectCardsForPay = () => {
           style={{
             backgroundColor: isScrolled ? "var(--bg-color)" : "transparent",
           }}
-        >
-          <NavBar_Show_After_Cart />
-        </div>
+        ></div>
       </div>
       <div className="SelectCardsForPay">
         <div className="CardDataArea">

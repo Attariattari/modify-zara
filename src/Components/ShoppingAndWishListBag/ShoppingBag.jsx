@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import LikeSameWithProductData from "../NewAllProducts/SingleProductData/LikeSomeProductsDataView/LikeSameWithProductData";
 import Footer from "../Footer/Footer";
 import "./Css.css";
-import NavBar_Show_After_Cart from "../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 import { useCart } from "../../Context/CartContext";
 import { useWishlist } from "../../Context/Wishlist";
 import Spinner from "../../Spinner";
@@ -282,12 +281,12 @@ function ShoppingBag() {
                         <RiCloseCircleLine
                           title="Remove from Cart"
                           style={{ width: "18px", height: "18px" }}
-                          onClick={() =>
+                          onClick={() => {
                             removeFromCart(
                               item.product?._id,
                               item.variation?.size
-                            )
-                          }
+                            );
+                          }}
                         />
                       </div>
                     </div>

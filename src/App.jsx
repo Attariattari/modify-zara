@@ -10,7 +10,6 @@ import {
 import { userContext } from "./Context/UserContext.jsx";
 import "./App.css";
 import ProtectedRoutes from "./Context/ProtectedRoutes.jsx";
-import FinalCartProductView from "./Components/FinalCartProductView/FinalCartProductView.jsx";
 import SingleProduct from "./Components/NewAllProducts/SingleProductData/SingleProduct.jsx";
 import InterCardData from "./Components/PaymentMethod/InterCardData/InterCardData";
 import SelectCardsForPay from "./Components/PaymentMethod/SelectCardsForPay.jsx";

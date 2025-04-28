@@ -7,6 +7,7 @@ import axios from "axios";
 import { userContext } from "../../Context/UserContext.jsx";
 import Navbar from "../Navbar/Navbar.jsx";
 import Footer from "../Footer/Footer.jsx";
+import Spinner from "../../Spinner.jsx";
 
 function validateEmail(value) {
   let error;
@@ -29,8 +30,8 @@ function validatePassword(value) {
 export default function Login() {
   const [focusedEmail, setFocusedEmail] = useState(false);
   const [focusedPassword, setFocusedPassword] = useState(false);
-  const { setUser, setAdmin, fetchUserData, token, isTokenValid } =
-    useContext(userContext);
+  const [loading, setLoading] = useState(false);
+  const { setUser, setAdmin, fetchUserData, token } = useContext(userContext);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate(); // ✅ Hook used here
@@ -38,6 +39,7 @@ export default function Login() {
   const from = location.state?.from?.pathname || "/";
   const handleLogin = async (values) => {
     try {
+      setLoading(true); // Step 2: Set loading to true before making API request
       console.log("🔵 Starting login process for:", values.email);
 
       const checkAdminDetails = async (email) => {
@@ -88,6 +90,8 @@ export default function Login() {
       navigate(from, { replace: true });
     } catch (err) {
       console.error("❌ Login failed", err);
+    } finally {
+      setLoading(false); // Step 3: Set loading to false after the process is finished
     }
   };
 
@@ -147,137 +151,151 @@ export default function Login() {
         </div>
       </div>{" "}
       <div className="login">
-        <Formik
-          initialValues={{
-            password: "",
-            email: "",
-          }}
-          onSubmit={(values) => {
-            handleLogin(values);
-          }}
-        >
-          <Form>
-            <div className="loginarea" id="LoginForm">
-              <p className="logintext font-extralight">
-                LOG IN TO YOUR ACCOUNT
-              </p>
+        {loading ? (
+          <div className="cart-spinner">
+            <span className="text-lg font-semibold">
+              <Spinner />
+            </span>
+          </div>
+        ) : (
+          <>
+            <Formik
+              initialValues={{
+                password: "",
+                email: "",
+              }}
+              onSubmit={(values) => {
+                handleLogin(values);
+              }}
+            >
+              <Form>
+                <div className="loginarea" id="LoginForm">
+                  <p className="logintext font-extralight">
+                    LOG IN TO YOUR ACCOUNT
+                  </p>
 
-              <div
-                className={`mb-4 relative ${
-                  errors.email ? "border-b-1 border-red-500" : "border-b-1"
-                }`}
-              >
-                <label
-                  className={
-                    "absolute mb-3 text-xs transition-all duration-150 " +
-                    (!focusedEmail ? "-z-10 top-5" : "")
-                  }
-                >
-                  Email
-                </label>
-                <Field
-                  className="pt-5 pb-2 outline-none w-full text-xs"
-                  name="email"
-                  type="email"
-                  placeholder={!focusedEmail ? "Email" : ""}
-                  onFocus={() => setFocusedEmail(true)}
-                  onBlur={(ev) => {
-                    if (ev.target.value.length === 0) setFocusedEmail(false);
-                    setErrors({
-                      ...errors,
-                      email: validateEmail(ev.target.value),
-                    });
-                  }}
-                  style={{
-                    borderBottom: errors.email
-                      ? "1px solid red"
-                      : "1px solid var(--border-color)",
-                    color: "var(--text-color)",
-                    backgroundColor: "var(--bg-color)",
-                  }}
-                />
-                {errors.email && (
-                  <div className="text-red-500 text-xs absolute">
-                    {errors.email}
+                  <div
+                    className={`mb-4 relative ${
+                      errors.email ? "border-b-1 border-red-500" : "border-b-1"
+                    }`}
+                  >
+                    <label
+                      className={
+                        "absolute mb-3 text-xs transition-all duration-150 " +
+                        (!focusedEmail ? "-z-10 top-5" : "")
+                      }
+                    >
+                      Email
+                    </label>
+                    <Field
+                      className="pt-5 pb-2 outline-none w-full text-xs"
+                      name="email"
+                      type="email"
+                      placeholder={!focusedEmail ? "Email" : ""}
+                      onFocus={() => setFocusedEmail(true)}
+                      onBlur={(ev) => {
+                        if (ev.target.value.length === 0)
+                          setFocusedEmail(false);
+                        setErrors({
+                          ...errors,
+                          email: validateEmail(ev.target.value),
+                        });
+                      }}
+                      style={{
+                        borderBottom: errors.email
+                          ? "1px solid red"
+                          : "1px solid var(--border-color)",
+                        color: "var(--text-color)",
+                        backgroundColor: "var(--bg-color)",
+                      }}
+                    />
+                    {errors.email && (
+                      <div className="text-red-500 text-xs absolute">
+                        {errors.email}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div
-                className={`mb-4 relative ${
-                  errors.password ? "border-b-1 border-red-500" : "border-b-1"
-                }`}
-                style={{
-                  color: "var=--text-color",
-                  backgroundColor: "var(--bg-color)",
-                }}
-              >
-                <label
-                  className={
-                    "absolute mb-3 text-xs transition-all duration-150 " +
-                    (!focusedPassword ? "-z-10 top-5" : "")
-                  }
-                  style={{
-                    color: "var=--text-color",
-                    backgroundColor: "var(--bg-color)",
-                  }}
-                >
-                  Password
-                </label>
-                <Field
-                  className="pt-5 pb-2 outline-none w-full text-xs"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder={!focusedPassword ? "Password" : ""}
-                  onFocus={() => setFocusedPassword(true)}
-                  onBlur={(ev) => {
-                    if (ev.target.value.length === 0) setFocusedPassword(false);
-                    setErrors({
-                      ...errors,
-                      password: validatePassword(ev.target.value),
-                    });
-                  }}
-                  style={{
-                    borderBottom: errors.password
-                      ? "1px solid red"
-                      : "1px solid var(--border-color)",
-                    color: "var(--text-color)",
-                    backgroundColor: "var(--bg-color)",
-                  }}
-                />
-                {showPassword ? (
-                  <IoIosEyeOff
-                    className="absolute right-0 top-6 cursor-pointer"
-                    onClick={() => setShowPassword(false)}
-                  />
-                ) : (
-                  <IoIosEye
-                    className="absolute right-0 top-6 cursor-pointer"
-                    onClick={() => setShowPassword(true)}
-                  />
-                )}
-                {errors.password && (
-                  <div className="text-red-500 text-xs absolute">
-                    {errors.password}
+                  <div
+                    className={`mb-4 relative ${
+                      errors.password
+                        ? "border-b-1 border-red-500"
+                        : "border-b-1"
+                    }`}
+                    style={{
+                      color: "var=--text-color",
+                      backgroundColor: "var(--bg-color)",
+                    }}
+                  >
+                    <label
+                      className={
+                        "absolute mb-3 text-xs transition-all duration-150 " +
+                        (!focusedPassword ? "-z-10 top-5" : "")
+                      }
+                      style={{
+                        color: "var=--text-color",
+                        backgroundColor: "var(--bg-color)",
+                      }}
+                    >
+                      Password
+                    </label>
+                    <Field
+                      className="pt-5 pb-2 outline-none w-full text-xs"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder={!focusedPassword ? "Password" : ""}
+                      onFocus={() => setFocusedPassword(true)}
+                      onBlur={(ev) => {
+                        if (ev.target.value.length === 0)
+                          setFocusedPassword(false);
+                        setErrors({
+                          ...errors,
+                          password: validatePassword(ev.target.value),
+                        });
+                      }}
+                      style={{
+                        borderBottom: errors.password
+                          ? "1px solid red"
+                          : "1px solid var(--border-color)",
+                        color: "var(--text-color)",
+                        backgroundColor: "var(--bg-color)",
+                      }}
+                    />
+                    {showPassword ? (
+                      <IoIosEyeOff
+                        className="absolute right-0 top-6 cursor-pointer"
+                        onClick={() => setShowPassword(false)}
+                      />
+                    ) : (
+                      <IoIosEye
+                        className="absolute right-0 top-6 cursor-pointer"
+                        onClick={() => setShowPassword(true)}
+                      />
+                    )}
+                    {errors.password && (
+                      <div className="text-red-500 text-xs absolute">
+                        {errors.password}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <button className="Loginbutton" type="submit">
-                LOG IN
-              </button>
-              <div className="Fogotten">
-                <Link to="#">Have you forgotten your password?</Link>
-              </div>
+                  <button className="Loginbutton" type="submit">
+                    LOG IN
+                  </button>
+                  <div className="Fogotten">
+                    <Link to="#">Have you forgotten your password?</Link>
+                  </div>
+                </div>
+              </Form>
+            </Formik>
+            <div className="singuparea">
+              <p className="singuptext font-extralight uppercase">
+                do you need an account?
+              </p>
+              <Link className="Registerbutton" to="/Signup">
+                REGISTER
+              </Link>
             </div>
-          </Form>
-        </Formik>
-        <div className="singuparea">
-          <p className="singuptext font-extralight uppercase">
-            do you need an account?
-          </p>
-          <Link className="Registerbutton" to="/Signup">
-            REGISTER
-          </Link>
-        </div>
+          </>
+        )}
       </div>
       <Footer />
     </div>

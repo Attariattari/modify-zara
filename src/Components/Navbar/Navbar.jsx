@@ -8,7 +8,7 @@ import { useCart } from "../../Context/CartContext";
 import { FaSearch, FaQuestionCircle, FaShoppingBag } from "react-icons/fa";
 export default function Navbar({ showSidePopup, toggleSidePopup }) {
   const [isLocalPopupVisible, setIsLocalPopupVisible] = useState(false);
-  const { user } = useContext(userContext);
+  const { user, handleLogout } = useContext(userContext);
   const navbarRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,20 +46,21 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
   };
   // Handle click outside to close dropdown
   useEffect(() => {
-    function handleClickOutside(event) {
-      // Check if ref is set and click is outside its element
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownWrapperRef.current &&
+        !dropdownWrapperRef.current.contains(event.target)
+      ) {
         setShowUserDropdown(false);
       }
-    }
+    };
 
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      // Clean up the event listener on unmount
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
   return (
     <div ref={navbarRef} className="Navbar">
       <div className="Navbar-body">
@@ -148,17 +149,18 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
             {/* User with Dropdown */}
             <li className="Navbar-user-wrapper" ref={dropdownRef}>
               {token ? (
-                <div className="Navbar-user" onClick={toggleUserDropdown}>
+                <div className="Navbar-user">
                   <img
                     src={user?.profileImage || "defaultUserImage.png"}
                     alt="User"
                     className="Navbar-user-img"
+                    onClick={toggleUserDropdown} // <-- sirf img pe click kar ke open/close hoga
                   />
                   {showUserDropdown && (
                     <div className="Navbar-user-dropdown">
                       <p>Profile</p>
                       <p>Orders</p>
-                      <p>Logout</p>
+                      <p onClick={handleLogout}>Logout</p>
                     </div>
                   )}
                 </div>
@@ -213,7 +215,7 @@ export default function Navbar({ showSidePopup, toggleSidePopup }) {
               )}
             </div>
             <svg
-              class="layout-catalog-logo-icon"
+              className="layout-catalog-logo-icon"
               aria-hidden="true"
               viewBox="0 0 132 55"
               onClick={Handlehome}

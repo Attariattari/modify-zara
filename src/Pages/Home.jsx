@@ -23,8 +23,11 @@ export default function Home() {
     scrollTimeout: true,
     manualScroll: false,
     data: [],
-    selectedProducts: [], // ✅ Added in your main state
+    selectedProducts: [],
+    showNavigationButtons: true,
+    isFirstCategoryActive: true, // 👈 new field add
   });
+
   useEffect(() => {
     fetchProducts(); // Jab component mount hoga to ye function run hoga
   }, []);
@@ -95,9 +98,13 @@ export default function Home() {
   const handleCategoryChange = (category) => {
     if (loading) return; // Jab tak loading hai, function execute na ho
 
+    const categoriesList = Object.keys(state.categories);
+    const isFirstCategory = categoriesList[0] === category; // ✅ Check karo kya yeh first category hai
+
     setState((prevState) => ({
       ...prevState,
       currentCategory: category,
+      isFirstCategoryActive: isFirstCategory, // ✅ isFirstCategoryActive ko yahan set karo
     }));
 
     const subcategories = state.categories[category];
@@ -401,20 +408,25 @@ export default function Home() {
           </div>
 
           <div className="SwiperArea mt-0">
-            <div className="NavigationButtons">
-              <div>
-                <IoMdArrowBack
-                  onClick={handlePrevCategory}
-                  className="arrow-icon cursor-pointer"
-                />
+            {state.showNavigationButtons && (
+              <div className="NavigationButtons">
+                <div>
+                  {!state.isFirstCategoryActive && ( // ✅ sirf jab first nahi ho
+                    <IoMdArrowBack
+                      onClick={handlePrevCategory}
+                      className="arrow-icon cursor-pointer"
+                    />
+                  )}
+                </div>
+                <div>
+                  <IoMdArrowForward
+                    onClick={handleNextCategory}
+                    className="arrow-icon cursor-pointer"
+                  />
+                </div>
               </div>
-              <div>
-                <IoMdArrowForward
-                  onClick={handleNextCategory}
-                  className="arrow-icon cursor-pointer"
-                />
-              </div>
-            </div>
+            )}
+
             <Swiper
               ref={swiperRef}
               direction={"vertical"}
@@ -429,10 +441,23 @@ export default function Home() {
               autoHeight={true}
               modules={[Mousewheel, Autoplay, Pagination]}
               className="mySwiper relative"
-              onSlideChange={() => {}}
               onTransitionEnd={() => {}}
               pagination={false}
               onScroll={() => handleScroll()}
+              onSlideChange={(swiper) => {
+                const activeSlide = swiper.slides[swiper.activeIndex];
+                if (activeSlide?.querySelector(".social-slide-page")) {
+                  setState((prevState) => ({
+                    ...prevState,
+                    showNavigationButtons: false,
+                  }));
+                } else {
+                  setState((prevState) => ({
+                    ...prevState,
+                    showNavigationButtons: true,
+                  }));
+                }
+              }}
             >
               {getCategorySlides()}
             </Swiper>

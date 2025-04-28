@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./InterCardData.css";
 import Footer from "../../Footer/Footer";
 import { Link } from "react-router-dom";
-import NavBar_Show_After_Cart from "../../Navbar/NavBar_Show_After_Cart/NavBar_Show_After_Cart";
 import Navbar from "../../Navbar/Navbar";
 
 const InterCardData = () => {

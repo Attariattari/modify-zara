@@ -126,6 +126,7 @@ export const CartProvider = ({ children }) => {
 
   // ✅ Remove From Cart
   const removeFromCart = (productId, size) => {
+    console.log("Removing from cart:", productId, size);
     handleRequest(
       () =>
         axios.delete("http://localhost:1122/CartProduct/remove", {
