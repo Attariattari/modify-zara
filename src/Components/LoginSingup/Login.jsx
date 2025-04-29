@@ -39,7 +39,7 @@ export default function Login() {
   const from = location.state?.from?.pathname || "/";
   const handleLogin = async (values) => {
     try {
-      setLoading(true); // Step 2: Set loading to true before making API request
+      setLoading(true);
       console.log("🔵 Starting login process for:", values.email);
 
       const checkAdminDetails = async (email) => {
@@ -70,28 +70,32 @@ export default function Login() {
       const { token, user } = response.data;
       console.log("✅ Authentication successful:", user);
 
+      // ✅ Store token in cookies
       document.cookie = `token=${token}; path=/`;
       console.log("✅ Token stored in cookies.");
 
+      // ✅ Set user in context
       setUser(user);
-      console.log("✅ User set:", user);
 
+      // ✅ Always fetch fresh user data (admin or not)
+      await fetchUserData();
+
+      // ✅ Check admin status
       const adminDetails = await checkAdminDetails(values.email);
       if (adminDetails.status === "success" && adminDetails.pageRoll === 1) {
         setAdmin(adminDetails);
-        fetchUserData();
         localStorage.setItem("admin", JSON.stringify(adminDetails));
         console.log("✅ User is an admin. Admin details set:", adminDetails);
       } else {
         console.log("ℹ️ User is not an admin.");
       }
 
-      // ✅ Redirect to the previous route
+      // ✅ Redirect to previous route or home
       navigate(from, { replace: true });
     } catch (err) {
       console.error("❌ Login failed", err);
     } finally {
-      setLoading(false); // Step 3: Set loading to false after the process is finished
+      setLoading(false);
     }
   };
 

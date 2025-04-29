@@ -2,9 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { userContext } from "../Context/UserContext";
 import axios from "axios";
+import Swal from "sweetalert2";
+
+import Spinner from "../Spinner";
 
 const ProtectedRoutes = () => {
-  const { setUser, token, setAdmin } = useContext(userContext);
+  const { user, setUser, token, setAdmin, checkUserDetailsById } =
+    useContext(userContext);
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
@@ -12,6 +16,8 @@ const ProtectedRoutes = () => {
       setIsAuthenticated(false);
       return;
     }
+
+    console.log(user._id, "User ID from context");
 
     const checkTokenValidity = async () => {
       try {
@@ -28,24 +34,44 @@ const ProtectedRoutes = () => {
         }
       } catch (error) {
         console.error("Token check failed:", error.message);
-        handleLogout();
         setIsAuthenticated(false);
       }
-    };
-
-    const handleLogout = () => {
-      setUser(null);
-      setAdmin(null);
-      localStorage.removeItem("user");
-      localStorage.removeItem("admin");
-      document.cookie = "token=; Max-Age=0; path=/;";
     };
 
     checkTokenValidity();
   }, [token, setUser, setAdmin]);
 
+  useEffect(() => {
+    if (user && user._id) {
+      checkUserDetailsById(user._id).then((data) => {
+        if (data?.pageRoll === 1) {
+          setAdmin(true);
+          setIsAuthenticated(true);
+        } else {
+          setAdmin(false);
+          setIsAuthenticated(false);
+
+          // SweetAlert instead of alert
+          Swal.fire({
+            icon: "error",
+            title: "Access Denied",
+            text: "You are not authorized to access the admin dashboard.",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Okay",
+          });
+        }
+      });
+    }
+  }, [user, checkUserDetailsById]);
+
   if (isAuthenticated === null) {
-    return <p>Loading...</p>;
+    return (
+      <div className="cart-spinner">
+        <span className="text-lg font-semibold">
+          <Spinner />
+        </span>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

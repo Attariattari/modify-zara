@@ -9,6 +9,7 @@ import { userContext } from "../../Context/UserContext.jsx";
 import { useTheme } from "../Context/ThemeContext";
 import Spinner from "../../Spinner";
 import VerificationInput from "./VerificationInput.jsx";
+import Swal from "sweetalert2";
 import * as Yup from "yup";
 // Validation functions
 function validateEmail(value) {
@@ -58,8 +59,6 @@ function Authanticate() {
   const [loading, setLoading] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [Verified, setVerified] = useState(true);
-  const { setUser, setAdmin, isTokenValid, fetchUserData } =
-    useContext(userContext);
   const [authSuccess, setAuthSuccess] = useState("");
   const [authError, setAuthError] = useState("");
   const { theme } = useTheme();
@@ -73,32 +72,50 @@ function Authanticate() {
   const [timer, setTimer] = useState(120);
   const navigate = useNavigate();
   const location = useLocation(); // Previous location capture karne ke liye
-
+  const {
+    setUser,
+    setAdmin,
+    user,
+    isTokenValid,
+    fetchUserData,
+    checkUserDetailsById,
+  } = useContext(userContext);
   useEffect(() => {
     const delayTime = 0; // 1 second delay
 
     const timer = setTimeout(() => {
       if (isTokenValid) {
-        const returnPath = location.state?.from || "/Admin/Dashboard";
-        navigate(returnPath);
+        // Check if user is an admin
+        if (user && user._id) {
+          checkUserDetailsById(user._id)
+            .then((data) => {
+              if (data?.pageRoll === 1) {
+                // Admin user, navigate to dashboard
+                const returnPath = location.state?.from || "/Admin/Dashboard";
+                navigate(returnPath);
+              } else {
+                // Non-admin user, show access denied message and stay on authenticate page
+                Swal.fire({
+                  icon: "error",
+                  title: "Access Denied",
+                  text: "You are not authorized to access the admin dashboard.",
+                  confirmButtonColor: "#d33",
+                  confirmButtonText: "Okay",
+                });
+                navigate("/Admin/Autanticate"); // Stay on the authenticate page
+              }
+            })
+            .catch((error) => {
+              // Handle any errors while checking user details
+              console.error("Error checking user details:", error);
+              navigate("/Admin/Autanticate"); // Fallback to authenticate page if error occurs
+            });
+        }
       }
     }, delayTime);
 
     return () => clearTimeout(timer);
-  }, [isTokenValid, navigate, location]);
-
-  // useEffect(() => {
-  //   const delayTime = 0; // 1 second delay
-
-  //   const timer = setTimeout(() => {
-  //     if (isTokenValid) {
-  //       navigate("/Admin/Dashboard");
-  //     }
-  //   }, delayTime);
-
-  //   // Cleanup the timeout if the component unmounts or dependencies change
-  //   return () => clearTimeout(timer);
-  // }, [isTokenValid, navigate]);
+  }, []);
 
   // Configure Axios to include credentials
   axios.defaults.withCredentials = true;
