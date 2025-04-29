@@ -90,12 +90,12 @@ export function UserContextProvider({ children }) {
   };
 
   const scheduleAutoLogout = (time) => {
-    if (logoutTimeoutRef.current) {
-      clearTimeout(logoutTimeoutRef.current);
-    }
-    logoutTimeoutRef.current = setTimeout(() => {
-      handleLogout();
-    }, time);
+    // if (logoutTimeoutRef.current) {
+    //   clearTimeout(logoutTimeoutRef.current);
+    // }
+    // logoutTimeoutRef.current = setTimeout(() => {
+    //   handleLogout();
+    // }, time);
   };
 
   const checkTokenValidity = async () => {
